@@ -215,131 +215,189 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-gsap.registerPlugin(ScrollTrigger);
 
-const resumeSection = document.querySelector(".my-resume-section .scroll-section");
-const wrapper = resumeSection.querySelector(".list");
-let items = wrapper.querySelectorAll(".item");
 
-const cardHeight = 600;
-const gap = 50;
-const extraGap = 100;
+/* ============================================
+   DESKTOP ONLY — Works when width >= 576px
+============================================ */
+if (window.innerWidth >= 576) {
 
-/* ======================================================
-   HEIGHT FIX FOR MOBILE & TABLET
-====================================================== */
-function getSafeHeight() {
-    return window.innerHeight || document.documentElement.clientHeight;
-}
+    gsap.registerPlugin(ScrollTrigger);
 
-function updateVH() {
-    let vh = getSafeHeight() * 0.01;
-    document.documentElement.style.setProperty("--vh", `${vh}px`);
-}
-updateVH();
+    const resumeSection = document.querySelector(".my-resume-section .scroll-section");
+    const wrapper = resumeSection.querySelector(".list");
+    let items = wrapper.querySelectorAll(".item");
 
-window.addEventListener("resize", updateVH);
-window.addEventListener("orientationchange", () => {
-    setTimeout(() => {
-        updateVH();
-        ScrollTrigger.refresh(true);
-    }, 500);
-});
+    const cardHeight = 600;
+    const gap = 50;
+    const extraGap = 100;
 
-/* ======================================================
-   POSITION STACKED CARDS
-====================================================== */
-function setupPositions() {
-    items.forEach((item, index) => {
-        item.style.position = "absolute";
-        item.style.top = "0";
-        item.style.left = "50%";
-        item.style.transform = "translateX(-50%)";
+    function getSafeHeight() {
+        return window.innerHeight || document.documentElement.clientHeight;
+    }
 
-        if (index === 0) {
-            gsap.set(item, { y: 0 });
-            item.classList.add("active");
-        } else {
-            const extra = index === 1 ? extraGap : 0;
-            gsap.set(item, {
-                y: index * (cardHeight + gap) + extra
-            });
+    function setupPositionsDesktop() {
+        items.forEach((item, index) => {
+            item.style.position = "absolute";
+            item.style.left = "50%";
+            item.style.top = "0";
+            item.style.transform = "translateX(-50%)";
+
+            if (index === 0) {
+                gsap.set(item, { y: 0 });
+            } else {
+                const extra = index === 1 ? extraGap : 0;
+                gsap.set(item, {
+                    y: index * (cardHeight + gap) + extra
+                });
+            }
+        });
+    }
+
+    function calcDesktopScrollEnd() {
+        const totalCards = items.length;
+        return (totalCards * cardHeight) +
+            ((totalCards - 1) * gap) +
+            extraGap - getSafeHeight();
+    }
+
+    function runDesktopResume() {
+
+        ScrollTrigger.getAll().forEach(st => st.kill());
+
+        setupPositionsDesktop();
+
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: resumeSection,
+                start: "top top",
+                end: () => "+=" + calcDesktopScrollEnd(),
+                scrub: 1,
+                pin: true,
+                pinType: "fixed",
+                invalidateOnRefresh: true,
+            }
+        });
+
+        items.forEach((item, index) => {
+            if (index === 0) return;
+
+            const prev = items[index - 1];
+
+            tl.to(prev, { scale: 0.9, borderRadius: "12px", duration: 0.8 });
+
+            tl.to(item, {
+                y: 0,
+                duration: 1,
+                ease: "power1.out",
+            }, "<0.2");
+        });
+
+        ScrollTrigger.refresh();
+    }
+
+    // FIRST RUN
+    runDesktopResume();
+
+    // RESIZE FIX (Only if still desktop)
+    window.addEventListener("resize", () => {
+        if (window.innerWidth >= 576) {
+            setTimeout(runDesktopResume, 300);
         }
     });
 }
 
-/* ======================================================
-   SCROLL LENGTH CALCULATION
-====================================================== */
-function calcScrollEnd() {
-    const totalCards = items.length;
-    const totalHeight =
-        (totalCards * cardHeight) +
-        ((totalCards - 1) * gap) +
-        extraGap;
 
-    return totalHeight - getSafeHeight();
-}
+/* ============================================
+   MOBILE ONLY — Works when width < 576px
+============================================ */
+if (window.innerWidth < 576) {
 
-/* ======================================================
-   MAIN DESKTOP/MOBILE STACKED ANIMATION (Same for All)
-====================================================== */
-function runResumeAnimation() {
+    gsap.registerPlugin(ScrollTrigger);
 
-    // clear old triggers
-    ScrollTrigger.getAll().forEach(st => st.kill());
+    const resumeSection = document.querySelector(".my-resume-section .scroll-section");
+    const wrapper = resumeSection.querySelector(".list");
+    let items = wrapper.querySelectorAll(".item");
 
-    setupPositions();
+    const cardHeight = 600; // same as desktop
+    const gap = 50;
+    const extraGap = 100;
 
-    let tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: resumeSection,
-            start: "top top",
-            end: () => "+=" + calcScrollEnd(),
-            scrub: 1,
-            pin: true,
-            pinType: resumeSection.style.transform ? "transform" : "fixed",
-            invalidateOnRefresh: true,
-        },
-    });
+    function getSafeHeight() {
+        return window.innerHeight;
+    }
 
-    items.forEach((item, index) => {
-        if (index === 0) return;
+    function setupPositionsMobile() {
+        items.forEach((item, index) => {
+            item.style.position = "absolute";
+            item.style.left = "50%";
+            item.style.top = "0";
+            item.style.transform = "translateX(-50%)";
 
-        const prev = items[index - 1];
+            if (index === 0) {
+                gsap.set(item, { y: 0 });
+            } else {
+                const extra = index === 1 ? extraGap : 0;
+                gsap.set(item, {
+                    y: index * (cardHeight + gap) + extra
+                });
+            }
+        });
+    }
 
-        tl.to(prev, { scale: 0.9, borderRadius: "12px", duration: 0.8 }, "+=0");
+    function calcMobileScrollEnd() {
+        const totalCards = items.length;
 
-        tl.to(item, {
-            y: 0,
-            duration: 1,
-            ease: "power1.out",
-            onStart: () => {
-                items.forEach(i => i.classList.remove("active"));
-                item.classList.add("active");
+        return (totalCards * cardHeight) +
+            ((totalCards - 1) * gap) +
+            extraGap - getSafeHeight();
+    }
 
-                const video = item.querySelector("video");
-                if (video) video.play();
+    function runMobileAnimation() {
+
+        ScrollTrigger.getAll().forEach(st => st.kill());
+
+        setupPositionsMobile();
+
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: resumeSection,
+                start: "top top",
+                end: () => "+=" + calcMobileScrollEnd(),
+                scrub: 1,
+                pin: true,
+                pinType: "fixed",
+                invalidateOnRefresh: true,
             },
-        }, "<0.2");
+        });
+
+        items.forEach((item, index) => {
+            if (index === 0) return;
+
+            const prev = items[index - 1];
+
+            tl.to(prev, { scale: 0.9, borderRadius: "12px", duration: 0.6 });
+
+            tl.to(item, {
+                y: 0,
+                duration: 0.8,
+                ease: "power1.out",
+            }, "<0.15");
+        });
+
+        ScrollTrigger.refresh();
+    }
+
+    // FIRST RUN
+    runMobileAnimation();
+
+    // Resize but only in mobile mode
+    window.addEventListener("resize", () => {
+        if (window.innerWidth < 576) {
+            setTimeout(runMobileAnimation, 300);
+        }
     });
-
-    ScrollTrigger.refresh();
 }
-
-/* ======================================================
-   INITIAL RUN (for all screens)
-====================================================== */
-runResumeAnimation();
-
-/* ======================================================
-   ON RESIZE → REBUILD EVERYTHING
-====================================================== */
-window.addEventListener("resize", () => {
-    setTimeout(() => {
-        runResumeAnimation();
-    }, 300);
-});
 
 
 
