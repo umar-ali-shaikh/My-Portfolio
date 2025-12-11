@@ -205,14 +205,14 @@ function showSlider(type) {
 // Scroll to top on refresh if user is scrolled
 // -----------------------------
 // Force scroll to top on page load
-// window.addEventListener("beforeunload", function () {
-//     window.scrollTo(0, 0);
-// });
+window.addEventListener("beforeunload", function () {
+    window.scrollTo(0, 0);
+});
 
-// // OR for some browsers, also on DOMContentLoaded
-// window.addEventListener("DOMContentLoaded", () => {
-//     window.scrollTo(0, 0);
-// });
+// OR for some browsers, also on DOMContentLoaded
+window.addEventListener("DOMContentLoaded", () => {
+    window.scrollTo(0, 0);
+});
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -225,9 +225,9 @@ const cardHeight = 600;
 const gap = 50;
 const extraGap = 100;
 
-/* -----------------------------------------
-   MOBILE HEIGHT FIX (VERY IMPORTANT)
------------------------------------------ */
+/* ======================================================
+   HEIGHT FIX FOR MOBILE & TABLET
+====================================================== */
 function getSafeHeight() {
     return window.innerHeight || document.documentElement.clientHeight;
 }
@@ -238,7 +238,6 @@ function updateVH() {
 }
 updateVH();
 
-/* Recalculate on resize/orientation */
 window.addEventListener("resize", updateVH);
 window.addEventListener("orientationchange", () => {
     setTimeout(() => {
@@ -247,9 +246,9 @@ window.addEventListener("orientationchange", () => {
     }, 500);
 });
 
-/* -----------------------------------------
-   POSITION CARDS
------------------------------------------ */
+/* ======================================================
+   POSITION STACKED CARDS
+====================================================== */
 function setupPositions() {
     items.forEach((item, index) => {
         item.style.position = "absolute";
@@ -269,38 +268,37 @@ function setupPositions() {
     });
 }
 
-/* -----------------------------------------
-   CALCULATE SCROLL END (MOBILE SAFE)
------------------------------------------ */
+/* ======================================================
+   SCROLL LENGTH CALCULATION
+====================================================== */
 function calcScrollEnd() {
     const totalCards = items.length;
-
     const totalHeight =
         (totalCards * cardHeight) +
         ((totalCards - 1) * gap) +
         extraGap;
 
-    const safeH = getSafeHeight(); // 👈 mobile fix
-
-    return totalHeight - safeH;
+    return totalHeight - getSafeHeight();
 }
 
-let tl;
+/* ======================================================
+   MAIN DESKTOP/MOBILE STACKED ANIMATION (Same for All)
+====================================================== */
+function runResumeAnimation() {
 
-/* -----------------------------------------
-   CREATE TIMELINE
------------------------------------------ */
-function createTimeline() {
-    if (tl) tl.kill();
+    // clear old triggers
+    ScrollTrigger.getAll().forEach(st => st.kill());
 
-    tl = gsap.timeline({
+    setupPositions();
+
+    let tl = gsap.timeline({
         scrollTrigger: {
             trigger: resumeSection,
             start: "top top",
             end: () => "+=" + calcScrollEnd(),
             scrub: 1,
             pin: true,
-            pinType: resumeSection.style.transform ? "transform" : "fixed",   // 👈 MOBILE PIN FIX
+            pinType: resumeSection.style.transform ? "transform" : "fixed",
             invalidateOnRefresh: true,
         },
     });
@@ -310,11 +308,7 @@ function createTimeline() {
 
         const prev = items[index - 1];
 
-        tl.to(prev, {
-            scale: 0.9,
-            borderRadius: "12px",
-            duration: 0.8
-        }, "+=0");
+        tl.to(prev, { scale: 0.9, borderRadius: "12px", duration: 0.8 }, "+=0");
 
         tl.to(item, {
             y: 0,
@@ -329,22 +323,22 @@ function createTimeline() {
             },
         }, "<0.2");
     });
+
+    ScrollTrigger.refresh();
 }
 
-/* -----------------------------------------
-   INITIAL RUN
------------------------------------------ */
-setupPositions();
-createTimeline();
+/* ======================================================
+   INITIAL RUN (for all screens)
+====================================================== */
+runResumeAnimation();
 
-/* -----------------------------------------
-   RESPONSIVE FIX
------------------------------------------ */
+/* ======================================================
+   ON RESIZE → REBUILD EVERYTHING
+====================================================== */
 window.addEventListener("resize", () => {
-    ScrollTrigger.getAll().forEach(st => st.kill());
-    setupPositions();
-    createTimeline();
-    ScrollTrigger.refresh();
+    setTimeout(() => {
+        runResumeAnimation();
+    }, 300);
 });
 
 
