@@ -2014,8 +2014,10 @@ img {
 @media (max-width: 576px) {
 
     .scroll-section {
-        will-change: transform;
+        will-change: auto;
         -webkit-overflow-scrolling: touch;
+        position: relative !important;
+        padding: 20px 0 !important;
     }
 
     .header-btn.header-btn-mobile {
@@ -2043,8 +2045,30 @@ img {
         bottom: 20px;
     }
 
+    /* Mobile: No animation, simple stack */
+    .my-resume-section .list {
+        position: relative !important;
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
     .my-resume-section .item {
-        overflow: auto;
+        position: relative !important;
+        height: auto !important;
+        min-height: auto !important;
+        max-height: none !important;
+        width: 100% !important;
+        padding: 25px !important;
+        margin-bottom: 0 !important;
+        overflow: visible;
+        transform: none !important;
+        left: auto !important;
+        top: auto !important;
+    }
+
+    .pin-spacer {
+        min-height: 0 !important;
     }
 
     .freelance-section .freelance-row-box-section {
@@ -2072,10 +2096,6 @@ img {
 
     .skill-name {
         font-size: 14px;
-    }
-
-    .pin-spacer {
-        min-height: calc(600px * 4 + 50px * 4 + 100px);
     }
 
     .skill-item {

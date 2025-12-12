@@ -143,10 +143,7 @@ document.querySelector('.footer-top-arrow .footer-top-arrow-hlp')
 
 
 /* ---------------------------------------------
-RESUME SECTION SCROLL ANIMATION (Unified)
----------------------------------------------- */
-/* ---------------------------------------------
-   FIXED MOBILE + DESKTOP RESUME SCROLL ENGINE
+RESUME SECTION SCROLL ANIMATION (Desktop Only)
 ---------------------------------------------- */
 function initResume() {
 
@@ -156,17 +153,36 @@ function initResume() {
     const wrapper = resumeSection.querySelector(".list");
     const cards = [...wrapper.querySelectorAll(".item")];
 
-    const cardHeight = 600;
-    const gap = 50;
-    const extraGap = 100;
+    // Detect mobile (576px and below)
+    const isMobile = window.innerWidth <= 576;
 
-    // FIX: always use stable height
-    const safeHeight = window.innerHeight;
-
+    // Kill all existing ScrollTriggers
     ScrollTrigger.getAll().forEach(st => st.kill());
     gsap.set(cards, { clearProps: "all" });
 
-    // Initial positions
+    // MOBILE: Simple static layout (no animation)
+    if (isMobile) {
+        cards.forEach((card, i) => {
+            gsap.set(card, {
+                position: "relative",
+                left: "auto",
+                top: "auto",
+                transform: "none",
+                y: 0,
+                scale: 1,
+                marginBottom: i < cards.length - 1 ? "30px" : "0"
+            });
+        });
+        return; // Exit early, no animation on mobile
+    }
+
+    // DESKTOP/TABLET: Scroll animation
+    const cardHeight = 600;
+    const gap = 50;
+    const extraGap = 100;
+    const safeHeight = window.innerHeight;
+
+    // Initial positions for animation
     cards.forEach((card, i) => {
         gsap.set(card, {
             position: "absolute",
@@ -190,12 +206,9 @@ function initResume() {
             end: "+=" + endValue,
             scrub: 1,
             pin: true,
-
-            /* THE FIX for Android Chrome */
             pinType: "transform",
-
             invalidateOnRefresh: true,
-            anticipatePin: 1    // PREVENTS JUMP
+            anticipatePin: 1
         }
     });
 
