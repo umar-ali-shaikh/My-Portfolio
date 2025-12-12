@@ -145,7 +145,10 @@ document.querySelector('.footer-top-arrow .footer-top-arrow-hlp')
 /* ---------------------------------------------
 RESUME SECTION SCROLL ANIMATION (Unified)
 ---------------------------------------------- */
-function initResume(isMobile) {
+/* ---------------------------------------------
+   FIXED MOBILE + DESKTOP RESUME SCROLL ENGINE
+---------------------------------------------- */
+function initResume() {
 
     const resumeSection = document.querySelector(".my-resume-section .scroll-section");
     if (!resumeSection) return;
@@ -157,60 +160,68 @@ function initResume(isMobile) {
     const gap = 50;
     const extraGap = 100;
 
-    function safeHeight() {
-        return isMobile
-            ? (window.visualViewport?.height || window.innerHeight)
-            : window.innerHeight;
-    }
-
-    function setupPositions() {
-        cards.forEach((card, i) => {
-            card.style.position = "absolute";
-            card.style.left = "50%";
-            card.style.top = 0;
-            card.style.transform = "translateX(-50%)";
-
-            gsap.set(card, {
-                y: i === 0 ? 0 : i * (cardHeight + gap) + (i === 1 ? extraGap : 0)
-            });
-        });
-    }
-
-    function scrollEnd() {
-        const total = cards.length;
-        return (total * cardHeight) + ((total - 1) * gap) + extraGap - safeHeight();
-    }
+    // FIX: always use stable height
+    const safeHeight = window.innerHeight;
 
     ScrollTrigger.getAll().forEach(st => st.kill());
-    setupPositions();
+    gsap.set(cards, { clearProps: "all" });
+
+    // Initial positions
+    cards.forEach((card, i) => {
+        gsap.set(card, {
+            position: "absolute",
+            left: "50%",
+            top: 0,
+            transform: "translateX(-50%)",
+            y: i === 0 ? 0 : i * (cardHeight + gap) + (i === 1 ? extraGap : 0)
+        });
+    });
+
+    const endValue =
+        (cards.length * cardHeight) +
+        ((cards.length - 1) * gap) +
+        extraGap -
+        safeHeight;
 
     let tl = gsap.timeline({
         scrollTrigger: {
             trigger: resumeSection,
             start: "top top",
-            end: "+=" + scrollEnd(),
+            end: "+=" + endValue,
             scrub: 1,
             pin: true,
-            pinType: isMobile ? "sticky" : "fixed",
-            invalidateOnRefresh: true
+
+            /* THE FIX for Android Chrome */
+            pinType: "transform",
+
+            invalidateOnRefresh: true,
+            anticipatePin: 1    // PREVENTS JUMP
         }
     });
 
+    // Scroll transitions between cards
     cards.forEach((card, i) => {
         if (i === 0) return;
 
-        let prev = cards[i - 1];
+        tl.to(cards[i - 1], {
+            scale: 0.9,
+            borderRadius: "12px",
+            duration: 0.6
+        });
 
-        tl.to(prev, { scale: 0.9, borderRadius: "12px", duration: 0.6 });
-        tl.to(card, { y: 0, duration: 0.8, ease: "power1.out" }, "<0.2");
+        tl.to(card, {
+            y: 0,
+            duration: 0.8,
+            ease: "power1.out"
+        }, "<0.2");
     });
 
     ScrollTrigger.refresh();
 }
 
-function initResumeHandler() {
-    initResume(window.innerWidth < 576);
-}
-
-initResumeHandler();
-window.addEventListener("resize", () => setTimeout(initResumeHandler, 300));
+// INIT
+initResume();
+window.addEventListener("resize", () => {
+    setTimeout(initResume, 100);
+});
+    
