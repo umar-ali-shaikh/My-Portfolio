@@ -319,12 +319,12 @@ if (window.innerWidth < 576) {
     const wrapper = resumeSection.querySelector(".list");
     let items = wrapper.querySelectorAll(".item");
 
-    const cardHeight = 600; // same as desktop
+    const cardHeight = 600;
     const gap = 50;
     const extraGap = 100;
 
     function getSafeHeight() {
-        return window.innerHeight;
+        return window.visualViewport ? window.visualViewport.height : window.innerHeight;
     }
 
     function setupPositionsMobile() {
@@ -366,7 +366,7 @@ if (window.innerWidth < 576) {
                 end: () => "+=" + calcMobileScrollEnd(),
                 scrub: 1,
                 pin: true,
-                pinType: "fixed",
+                pinType: "transform",   // ⭐ FIXED FOR MOBILE
                 invalidateOnRefresh: true,
             },
         });
@@ -388,10 +388,8 @@ if (window.innerWidth < 576) {
         ScrollTrigger.refresh();
     }
 
-    // FIRST RUN
     runMobileAnimation();
 
-    // Resize but only in mobile mode
     window.addEventListener("resize", () => {
         if (window.innerWidth < 576) {
             setTimeout(runMobileAnimation, 300);
@@ -399,6 +397,7 @@ if (window.innerWidth < 576) {
     });
 }
 
+window.addEventListener("load", () => ScrollTrigger.refresh());
 
 
 
