@@ -2094,12 +2094,3 @@ img {
         flex: 0 0 calc(100% / 2 - 10px);
     }
 }
-
-/* XXS */
-@media (max-width: 425px) {}
-
-/* XXXS */
-@media (max-width: 375px) {}
-
-/* Smallest Devices */
-@media (max-width: 320px) {}

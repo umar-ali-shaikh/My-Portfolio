@@ -308,6 +308,7 @@ if (window.innerWidth >= 576) {
 }
 
 
+
 /* ============================================
    MOBILE ONLY — Works when width < 576px
 ============================================ */
@@ -365,8 +366,8 @@ if (window.innerWidth < 576) {
                 start: "top 0",
                 end: () => "+=" + calcMobileScrollEnd(),
                 scrub: 1,
-                pin: true,              // MUST be true
-                pinType: "sticky",      // mobile-friendly sticky pinning
+                pin: true,           
+                pinType: "sticky",   
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
             },
