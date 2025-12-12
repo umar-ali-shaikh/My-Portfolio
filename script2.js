@@ -194,10 +194,9 @@ function initResume() {
     });
 
     const endValue =
-        (cards.length * cardHeight) +
-        ((cards.length - 1) * gap) +
-        extraGap -
-        safeHeight;
+        (cards.length * cardHeight) + 
+        ((cards.length - 1) * gap) + 
+        extraGap - safeHeight;
 
     let tl = gsap.timeline({
         scrollTrigger: {
@@ -212,7 +211,7 @@ function initResume() {
         }
     });
 
-    // Scroll transitions between cards
+    // Animate cards
     cards.forEach((card, i) => {
         if (i === 0) return;
 
@@ -232,9 +231,5 @@ function initResume() {
     ScrollTrigger.refresh();
 }
 
-// INIT
 initResume();
-window.addEventListener("resize", () => {
-    setTimeout(initResume, 100);
-});
-    
+window.addEventListener("resize", () => setTimeout(initResume, 100));
