@@ -362,11 +362,12 @@ if (window.innerWidth < 576) {
         let tl = gsap.timeline({
             scrollTrigger: {
                 trigger: resumeSection,
-                start: "top top",
+                start: "top 0",
                 end: () => "+=" + calcMobileScrollEnd(),
                 scrub: 1,
-                pin: true,
-                pinType: "transform",   // ⭐ FIXED FOR MOBILE
+                pin: true,              // MUST be true
+                pinType: "sticky",      // mobile-friendly sticky pinning
+                anticipatePin: 1,
                 invalidateOnRefresh: true,
             },
         });
