@@ -143,82 +143,95 @@ document.querySelector('.footer-top-arrow .footer-top-arrow-hlp')
 
 
 /* ---------------------------------------------
-RESUME SECTION SCROLL ANIMATION (Unified)
----------------------------------------------- */
-/* ---------------------------------------------
    FIXED MOBILE + DESKTOP RESUME SCROLL ENGINE
 ---------------------------------------------- */
+/* ----------------------------------------------------
+   ANDROID-PROOF SCROLL STACK ENGINE (Final Stable)
+---------------------------------------------------- */
 function initResume() {
 
-    const resumeSection = document.querySelector(".my-resume-section .scroll-section");
-    if (!resumeSection) return;
+    const section = document.querySelector(".my-resume-section .scroll-section");
+    if (!section) return;
 
-    const wrapper = resumeSection.querySelector(".list");
+    const wrapper = section.querySelector(".list");
     const cards = [...wrapper.querySelectorAll(".item")];
 
-    const cardHeight = 600;
-    const gap = 50;
-    const extraGap = 100;
+    // REAL MOBILE FIX — dynamic card height
+    const vwHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const cardHeight = vwHeight * 0.85;  
+    const gap = 40;
 
-    const safeHeight = window.innerHeight; // FIXED
-
-    ScrollTrigger.getAll().forEach(st => st.kill());
+    // Kill old triggers
+    ScrollTrigger.getAll().forEach(t => t.kill());
     gsap.set(cards, { clearProps: "all" });
 
-    // FIX: wrapper ko height set karo
-    wrapper.style.height =
-        (cards.length * cardHeight) + 
-        ((cards.length - 1) * gap) + 
-        extraGap + "px";
+    // ⭐ Calculate wrapper height based on REAL device height
+    const totalHeight = (cards.length * (cardHeight + gap));
+    wrapper.style.height = totalHeight + "px";
 
-    // Set initial card positions
+    // ⭐ Set initial card positions
     cards.forEach((card, i) => {
         gsap.set(card, {
             position: "absolute",
-            left: "50%",
             top: 0,
+            left: "50%",
             transform: "translateX(-50%)",
-            y: i === 0 ? 0 : i * (cardHeight + gap) + (i === 1 ? extraGap : 0)
+            y: i * (cardHeight + gap)
         });
     });
 
-    const endValue =
-        (cards.length * cardHeight) + 
-        ((cards.length - 1) * gap) + 
-        extraGap - safeHeight;
+    // ⭐ Scroll end value
+    const endVal = totalHeight - vwHeight;
 
-    let tl = gsap.timeline({
+    // ⭐ TIMELINE
+    const tl = gsap.timeline({
         scrollTrigger: {
-            trigger: resumeSection,
+            trigger: section,
             start: "top top",
-            end: "+=" + endValue,
+            end: "+=" + endVal,
             scrub: 1,
             pin: true,
-            pinType: "transform",  // SUPER IMPORTANT FIX
+            pinSpacing: true,
+            pinType: "fixed",  // ⭐ ANDROID BEST BEHAVIOR
             invalidateOnRefresh: true,
             anticipatePin: 1
         }
     });
 
-    // Animate cards
+    // ⭐ Animate stack
     cards.forEach((card, i) => {
         if (i === 0) return;
 
         tl.to(cards[i - 1], {
             scale: 0.9,
-            borderRadius: "12px",
-            duration: 0.6
+            borderRadius: "15px",
+            duration: 0.4
         });
 
         tl.to(card, {
             y: 0,
-            duration: 0.8,
+            duration: 0.6,
             ease: "power1.out"
-        }, "<0.2");
+        }, "<0.1");
     });
 
-    ScrollTrigger.refresh();
+    ScrollTrigger.refresh(true);
 }
 
+// INIT + FIX ANDROID RESIZE BEHAVIOR
 initResume();
-window.addEventListener("resize", () => setTimeout(initResume, 100));
+
+// ⭐ Android fix: Visual viewport resize
+if (window.visualViewport) {
+    visualViewport.addEventListener("resize", () =>
+        setTimeout(() => initResume(), 200)
+    );
+}
+
+window.addEventListener("orientationchange", () =>
+    setTimeout(() => initResume(), 300)
+);
+
+window.addEventListener("resize", () =>
+    setTimeout(() => initResume(), 300)
+);
