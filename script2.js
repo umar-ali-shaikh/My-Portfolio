@@ -78,137 +78,98 @@ createMarquee(".animated-contactslide .animated-skills-hlp-cross2 .animated-skil
 /* ---------------------------------------------
 CUSTOM CAROUSEL (Optimized)
 ---------------------------------------------- */
-if (window.innerWidth >= 576) {
+if (window.innerWidth > 576) {
     const nextBtn = document.getElementById('next');
     const prevBtn = document.getElementById('prev');
     const carousel = document.querySelector('.carousel');
+    if (!carousel || !nextBtn || !prevBtn) return;
 
-    if (carousel && nextBtn && prevBtn) {
+    const slider = carousel.querySelector('.list');
+    const thumbs = carousel.querySelector('.thumbnail');
 
-        const slider = carousel.querySelector('.list');
-        const thumbs = carousel.querySelector('.thumbnail');
+    let autoNextTimer;
+    const TIME_AUTO = 7000;
+    const TIME_ANIM = window.innerWidth < 768 ? 1200 : 3000;
 
-        let autoNextTimer;
-        const TIME_AUTO = 7000;
-        const TIME_ANIM = window.innerWidth < 768 ? 1200 : 3000;
+    function resetAutoNext() {
+        clearTimeout(autoNextTimer);
+        autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
+    }
 
+    function rotateItems(type) {
+        const slides = [...slider.children];
+        const thumbItems = [...thumbs.children];
 
-        function resetAutoNext() {
-            clearTimeout(autoNextTimer);
-            autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
-        }
+        carousel.classList.add(type);
 
-        function rotateItems(type) {
-            const slides = [...slider.children];
-            const thumbItems = [...thumbs.children];
+        type === "next"
+            ? (slider.append(slides[0]), thumbs.append(thumbItems[0]))
+            : (slider.prepend(slides.at(-1)), thumbs.prepend(thumbItems.at(-1)));
 
-            carousel.classList.add(type);
-
-            if (type === 'next') {
-                slider.appendChild(slides[0]);
-                thumbs.appendChild(thumbItems[0]);
-            } else {
-                slider.prepend(slides.at(-1));
-                thumbs.prepend(thumbItems.at(-1));
-            }
-
-            setTimeout(() => {
-                carousel.classList.remove(type);
-                nextBtn.style.pointerEvents =
-                    prevBtn.style.pointerEvents = "auto";
-            }, TIME_ANIM);
-
-            resetAutoNext();
-        }
-
-        nextBtn.onclick = () => {
-            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-            rotateItems("next");
-        };
-
-        prevBtn.onclick = () => {
-            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-            rotateItems("prev");
-        };
+        setTimeout(() => {
+            carousel.classList.remove(type);
+            nextBtn.style.pointerEvents =
+                prevBtn.style.pointerEvents = "auto";
+        }, TIME_ANIM);
 
         resetAutoNext();
     }
-}
 
+    nextBtn.onclick = () => {
+        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+        rotateItems("next");
+    };
 
-if (window.innerWidth <= 576) {
+    prevBtn.onclick = () => {
+        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+        rotateItems("prev");
+    };
+
+    resetAutoNext();
+} else {
+    if (typeof gsap === "undefined") return;
 
     const carousel = document.querySelector('.carousel');
     const list = carousel.querySelector('.list');
-    const items = Array.from(list.children);
+    const items = [...list.children];
     const next = document.getElementById('next');
     const prev = document.getElementById('prev');
 
     let index = 0;
-    let isAnimating = false;
+    let animating = false;
 
-    // Initial state
-    gsap.set(items, {
-        opacity: 0,
-        scale: 0.9
-    });
+    gsap.set(items, { opacity: 0, scale: 0.9 });
+    gsap.set(items[0], { opacity: 1, scale: 1 });
 
-    gsap.set(items[0], {
-        opacity: 1,
-        scale: 1
-    });
+    function showSlide(newIndex, dir) {
+        if (animating) return;
+        animating = true;
 
-    function showSlide(newIndex, direction = 1) {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        const current = items[index];
-        const nextItem = items[newIndex];
-
-        const tl = gsap.timeline({
+        gsap.timeline({
             onComplete: () => {
                 index = newIndex;
-                isAnimating = false;
+                animating = false;
             }
-        });
-
-        tl.to(current, {
-            x: -50 * direction,
-            opacity: 0,
-            scale: 0.95,
-            duration: 0.5,
-            ease: "power2.out"
-        });
-
-        tl.fromTo(
-            nextItem,
-            {
-                x: 50 * direction,
+        })
+            .to(items[index], {
                 opacity: 0,
-                scale: 0.95
-            },
-            {
-                x: 0,
+                x: -30 * dir,
+                duration: 0.4
+            })
+            .fromTo(items[newIndex], {
+                opacity: 0,
+                x: 30 * dir
+            }, {
                 opacity: 1,
-                scale: 1,
-                duration: 0.5,
-                ease: "power2.out"
-            },
-            "-=0.3"
-        );
+                x: 0,
+                duration: 0.4
+            }, "-=0.2");
     }
 
-    next.addEventListener("click", () => {
-        const newIndex = (index + 1) % items.length;
-        showSlide(newIndex, 1);
-    });
-
-    prev.addEventListener("click", () => {
-        const newIndex = (index - 1 + items.length) % items.length;
-        showSlide(newIndex, -1);
-    });
-
+    next.onclick = () => showSlide((index + 1) % items.length, 1);
+    prev.onclick = () => showSlide((index - 1 + items.length) % items.length, -1);
 }
+
 
 /* ---------------------------------------------
    SCROLL TOP ON LOAD + BACK TO TOP
