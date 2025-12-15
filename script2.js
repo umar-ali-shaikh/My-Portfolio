@@ -78,60 +78,137 @@ createMarquee(".animated-contactslide .animated-skills-hlp-cross2 .animated-skil
 /* ---------------------------------------------
 CUSTOM CAROUSEL (Optimized)
 ---------------------------------------------- */
-const nextBtn = document.getElementById('next');
-const prevBtn = document.getElementById('prev');
-const carousel = document.querySelector('.carousel');
+if (window.innerWidth >= 576) {
+    const nextBtn = document.getElementById('next');
+    const prevBtn = document.getElementById('prev');
+    const carousel = document.querySelector('.carousel');
 
-if (carousel && nextBtn && prevBtn) {
+    if (carousel && nextBtn && prevBtn) {
 
-    const slider = carousel.querySelector('.list');
-    const thumbs = carousel.querySelector('.thumbnail');
+        const slider = carousel.querySelector('.list');
+        const thumbs = carousel.querySelector('.thumbnail');
 
-    let autoNextTimer;
-    const TIME_AUTO = 7000;
-    const TIME_ANIM = 3000;
+        let autoNextTimer;
+        const TIME_AUTO = 7000;
+        const TIME_ANIM = window.innerWidth < 768 ? 1200 : 3000;
 
-    function resetAutoNext() {
-        clearTimeout(autoNextTimer);
-        autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
-    }
 
-    function rotateItems(type) {
-        const slides = [...slider.children];
-        const thumbItems = [...thumbs.children];
-
-        carousel.classList.add(type);
-
-        if (type === 'next') {
-            slider.appendChild(slides[0]);
-            thumbs.appendChild(thumbItems[0]);
-        } else {
-            slider.prepend(slides.at(-1));
-            thumbs.prepend(thumbItems.at(-1));
+        function resetAutoNext() {
+            clearTimeout(autoNextTimer);
+            autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
         }
 
-        setTimeout(() => {
-            carousel.classList.remove(type);
-            nextBtn.style.pointerEvents =
-                prevBtn.style.pointerEvents = "auto";
-        }, TIME_ANIM);
+        function rotateItems(type) {
+            const slides = [...slider.children];
+            const thumbItems = [...thumbs.children];
+
+            carousel.classList.add(type);
+
+            if (type === 'next') {
+                slider.appendChild(slides[0]);
+                thumbs.appendChild(thumbItems[0]);
+            } else {
+                slider.prepend(slides.at(-1));
+                thumbs.prepend(thumbItems.at(-1));
+            }
+
+            setTimeout(() => {
+                carousel.classList.remove(type);
+                nextBtn.style.pointerEvents =
+                    prevBtn.style.pointerEvents = "auto";
+            }, TIME_ANIM);
+
+            resetAutoNext();
+        }
+
+        nextBtn.onclick = () => {
+            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+            rotateItems("next");
+        };
+
+        prevBtn.onclick = () => {
+            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+            rotateItems("prev");
+        };
 
         resetAutoNext();
     }
-
-    nextBtn.onclick = () => {
-        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-        rotateItems("next");
-    };
-
-    prevBtn.onclick = () => {
-        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-        rotateItems("prev");
-    };
-
-    resetAutoNext();
 }
 
+
+if (window.innerWidth <= 576) {
+
+    const carousel = document.querySelector('.carousel');
+    const list = carousel.querySelector('.list');
+    const items = Array.from(list.children);
+    const next = document.getElementById('next');
+    const prev = document.getElementById('prev');
+
+    let index = 0;
+    let isAnimating = false;
+
+    // Initial state
+    gsap.set(items, {
+        opacity: 0,
+        scale: 0.9
+    });
+
+    gsap.set(items[0], {
+        opacity: 1,
+        scale: 1
+    });
+
+    function showSlide(newIndex, direction = 1) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        const current = items[index];
+        const nextItem = items[newIndex];
+
+        const tl = gsap.timeline({
+            onComplete: () => {
+                index = newIndex;
+                isAnimating = false;
+            }
+        });
+
+        tl.to(current, {
+            x: -50 * direction,
+            opacity: 0,
+            scale: 0.95,
+            duration: 0.5,
+            ease: "power2.out"
+        });
+
+        tl.fromTo(
+            nextItem,
+            {
+                x: 50 * direction,
+                opacity: 0,
+                scale: 0.95
+            },
+            {
+                x: 0,
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                ease: "power2.out"
+            },
+            "-=0.3"
+        );
+    }
+
+    next.addEventListener("click", () => {
+        const newIndex = (index + 1) % items.length;
+        showSlide(newIndex, 1);
+    });
+
+    prev.addEventListener("click", () => {
+        const newIndex = (index - 1 + items.length) % items.length;
+        showSlide(newIndex, -1);
+    });
+
+}
 
 /* ---------------------------------------------
    SCROLL TOP ON LOAD + BACK TO TOP
@@ -158,7 +235,7 @@ function initResume() {
 
     // REAL MOBILE FIX — dynamic card height
     const vwHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    const cardHeight = vwHeight * 0.85;  
+    const cardHeight = vwHeight * 0.85;
     const gap = 40;
 
     // Kill old triggers

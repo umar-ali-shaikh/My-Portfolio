@@ -2009,6 +2009,40 @@ img {
     }
 }
 
+@media (max-width: 576px) {
+    .carousel {
+        height: 100vh;
+    }
+
+    .carousel .list .item {
+        position: absolute;
+        inset: 0;
+        will-change: transform, opacity;
+    }
+
+    .carousel .list .item img {
+        transform: none !important;
+        border-radius: 0 !important;
+    }
+
+    .carousel .list .item .content {
+        width: 90%;
+        left: 0;
+        right: 0;
+        margin: auto;
+        backdrop-filter: none !important;
+        filter: none !important;
+        background: rgba(0, 0, 0, 0.85);
+    }
+
+    .thumbnail {
+        display: none;
+    }
+
+    .carousel .time {
+        display: none;
+    }
+}
 
 /* SM */
 @media (max-width: 576px) {
@@ -2086,7 +2120,46 @@ img {
     .my-resume-section .item_content p {
         text-align: center;
     }
+
+    .carousel.next .list .item:nth-child(1) img {
+        transform: scale(0.2);
+        opacity: 0;
+    }
+
+    @keyframes showImage {
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    .carousel .list .item .content {
+        backdrop-filter: none;
+        filter: none;
+        background: rgba(0, 0, 0, 0.85);
+    }
+
+    .carousel img,
+    .carousel .content {
+        will-change: transform, opacity;
+    }
+
+    .thumbnail {
+        display: none;
+    }
+
+    .carousel .time {
+        position: absolute !important;
+    }
+
+    .carousel .list .item:nth-child(1) {
+        z-index: -1;
+    }
+
 }
+
+
+
 
 /* XS */
 @media (max-width: 480px) {
