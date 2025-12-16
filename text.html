@@ -25,271 +25,259 @@
 
   <style>
     /* ==============================
-    My Resume Section
-  ============================== */
-    .my-resume-section {
-      position: relative;
+   MY PROJECTS – OPTIMIZED
+============================== */
+
+    :root {
+      --glass-bg: rgba(0, 0, 0, 0.55);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --accent: #f1683a;
+    }
+
+    /* SECTION */
+    .my-project-section {
       width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background-color: #0d0d0d;
-      color: #fff;
-      padding: 50px 0;
+      padding-top: 50px;
       overflow: hidden;
     }
 
-    .pin-spacer {
-      padding-top: 0 !important;
-      margin-top: 0 !important;
-      padding-bottom: 0 !important;
-      margin-bottom: 0 !important;
-      height: auto !important;
-    }
-
-    .scroll-section {
-      height: auto !important;
-      min-height: 100vh !important;
-    }
-
-
-    /* Wrapper inside section */
-    .my-resume-section .wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    /* List container */
-    .my-resume-section .list {
-      position: relative;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: start;
-      gap: 50px;
-
-    }
-
-    .my-resume-section .item {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%) scale(1);
-      width: 90%;
-      max-height: 550px;
-      height: 100vh;
-      padding: 40px;
-      background: var(--text3-color, #1a1a1a);
-      border-radius: 15px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      overflow: hidden;
-      z-index: 1;
-      transform-origin: center center;
-    }
-
-    /* Active item styling */
-    .my-resume-section .item.active {
-      z-index: 10;
-    }
-
-    /* Content inside card */
-    .my-resume-section .item_content {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      width: 100%;
-    }
-
-    .education-item {
-      flex-direction: column;
-      justify-content: start !important;
-      gap: 50px !important;
-    }
-
-    .my-resume-section-heading {
-      width: 100%;
+    .my-project-content h2 {
+      text-align: center;
       margin-bottom: 50px;
     }
 
-    .my-resume-section-heading h2 {
-      text-align: center;
+    /* CAROUSEL */
+    .carousel {
+      position: relative;
+      width: 100vw;
+      height: 100svh;
+      /* ✅ mobile safe */
+      max-height: 650px;
+      overflow: hidden;
     }
 
-    /* Headings */
-    .my-resume-section .item_content h1,
-    .my-resume-section .item_content h2 {
-      font-size: 38px;
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-
-    .my-resume-section .info-hlp {
-      width: 40%;
-    }
-
-    /* Meta titles */
-    .meta .title {
-      font-size: 24px;
-    }
-
-    .experience-item .item_content {
+    .carousel .list .item {
+      position: absolute;
+      inset: 0;
       width: 100%;
+      height: 100%;
     }
 
-    /* Paragraphs */
-    .my-resume-section .item_content p {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #ccc;
-    }
-
-    /* Video / media inside card */
-    .my-resume-section .item_media {
-      width: 50%;
+    .carousel .list .item img {
+      width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 12px;
     }
 
-    /* Info section */
-    .my-resume-section .info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+    /* CONTENT CARD */
+    .carousel .list .item .content {
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      width: 60%;
+      max-width: 700px;
+
+      padding: 50px;
+      border-radius: 30px;
+      color: #fff;
+
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+
+      backdrop-filter: blur(16px) saturate(160%);
+      will-change: transform, opacity;
+      /* ✅ GPU hint */
+    }
+
+    /* DESCRIPTION SCROLL */
+    .carousel .list .item .content .des {
+      max-height: 100px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    /* TEXT */
+    .carousel .author {
+      font-weight: bold;
+      letter-spacing: 8px;
+    }
+
+    .carousel .title,
+    .carousel .topic {
+      font-size: 48px;
+      font-weight: bold;
+      line-height: 1.3;
+    }
+
+    .carousel .topic {
+      color: var(--accent);
+    }
+
+    /* BUTTONS */
+    .carousel .buttons {
       margin-top: 20px;
     }
 
-    /* Info labels */
-    .my-resume-section .info-hlp .label {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: #aaa;
-    }
-
-    /* Info values */
-    .my-resume-section .info-hlp .info-label {
-      font-weight: 500;
-      font-size: 1rem;
+    .carousel .buttons button {
+      padding: 10px 50px;
+      border-radius: 15px;
+      background: transparent;
+      border: 1px solid #fff;
       color: #fff;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: transform .3s ease, background .3s ease;
     }
 
-    /* Education section */
-    .my-resume-section-education {
+    .carousel .buttons button:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    /* THUMBNAILS */
+    .thumbnail {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .my-resume-section-education .meta-field span {
-      font-weight: 400;
-      font-size: 16px;
-    }
-
-
-    .skills-container {
-      display: flex;
-      flex-wrap: wrap;
       gap: 20px;
+      transform: translateX(-50%);
+      z-index: 100;
     }
 
-    .skill-item {
+    .thumbnail .item {
+      width: 150px;
+      height: 220px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 20px;
+    }
+
+    /* ARROWS */
+    .arrows {
+      position: absolute;
+      top: 80%;
+      right: 52%;
       display: flex;
-      align-items: center;
-      border-radius: 12px;
-      padding: 1rem 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      flex: 0 0 calc(100% / 3 - 20px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      gap: 10px;
+      z-index: 100;
     }
 
-    .skills-section-hlp .item_content {
-      width: 100% !important;
-      display: flex;
-      justify-content: center;
+    .arrows button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: background .3s ease, color .3s ease;
     }
 
-    .skill-item:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    .arrows button:hover {
+      background: #fff;
+      color: #000;
     }
 
-    .skill-icon {
-      width: 50px;
-      height: 50px;
-      object-fit: contain;
-      margin-right: 1rem;
+    /* ACTIVE SLIDE */
+    .carousel .list .item:nth-child(1) {
+      z-index: 1;
     }
 
-    .skill-content {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
+    /* CONTENT ANIMATION – GPU SAFE */
+    .carousel.next .content>* {
+      opacity: 0;
+      transform: translateY(40px);
+      animation: contentIn .6s ease forwards;
     }
 
-    .skill-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1.2rem;
-      color: var(--text1-color);
+    @keyframes contentIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .skill-level {
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 0.9rem;
-      color: #555;
+    /* IMAGE SCALE ANIMATION */
+    .carousel.next .list .item:nth-child(1) img {
+      animation: imageExpand .5s ease forwards;
     }
 
-
-    /* Responsive adjustments */
-
-    @media (max-width: 1200px) {
-      .my-resume-section .item {
-        width: 95%;
-        padding: 30px;
+    @keyframes imageExpand {
+      from {
+        transform: scale(.92);
       }
 
+      to {
+        transform: scale(1);
+      }
     }
 
-    @media (max-width: 768px) {
-      .my-resume-section .item {
+    /* TIME BAR */
+    .carousel .time {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0;
+      background: var(--accent);
+      z-index: 1000;
+    }
+
+    .carousel.next .time,
+    .carousel.prev .time {
+      animation: timeRun 3s linear forwards;
+    }
+
+    @keyframes timeRun {
+      from {
         width: 100%;
-        padding: 20px;
-        /* max-height: none; */
-        flex-direction: column;
       }
 
-      .my-resume-section .item_content h1,
-      .my-resume-section .item_content h2 {
-        font-size: 24px;
-      }
-
-      .meta .title {
-        font-size: 20px;
-      }
-
-      .my-resume-section .item_content p {
-        font-size: 0.9rem;
+      to {
+        width: 0;
       }
     }
 
-    @media (max-width: 992px) {
-      .scroll-section.vertical-section .item {
-        width: 95%;
-        padding: 30px;
+    /* DISABLE ARROWS DURING ANIM */
+    .carousel.next .arrows button,
+    .carousel.prev .arrows button {
+      pointer-events: none;
+    }
+
+    /* ==============================
+   MOBILE FIXES
+============================== */
+    @media (max-width: 678px) {
+
+      .carousel {
+        max-height: none;
       }
 
-      .scroll-section.vertical-section .item_content h1,
-      .scroll-section.vertical-section .item_content h2 {
-        font-size: 1.5rem;
+      .carousel .content {
+        width: 90%;
+        padding: 25px;
+        backdrop-filter: none;
+        /* 🔥 MOBILE GPU FIX */
+        background: rgba(0, 0, 0, .75);
       }
 
-      .scroll-section.vertical-section .item_content p {
-        font-size: 0.9rem;
+      .carousel .title,
+      .carousel .topic {
+        font-size: 30px;
+      }
+
+      .thumbnail {
+        display: none;
+        /* ✅ clean mobile UX */
       }
     }
   </style>
@@ -297,248 +285,469 @@
 
 <body>
 
-  <!-- My Resume -->
-  <section class="my-resume-section">
+  <!-- My Projects -->
+  <section class="my-project-section sectionaddactive">
 
-    <div class="my-resume-section-heading">
-      <h2 class="section-mainhd">My Resume</h2>
+    <div class="my-project-content">
+      <h2 class="section-mainhd">
+        My Portfolio
+      </h2>
     </div>
 
-    <div class="scroll-section vertical-section section container">
-      <div role="list" class="list">
-        <div role="listitem" class="item">
-          <div class="item_content">
-            <h1>Umarali Shaikh –<span class="portfolio-redcolor"> Web Developer</span>, based in India.</h1>
-            <p class="intro">
-              I craft web experiences that are not only visually appealing but also intuitive and
-              functional. My focus is on building responsive, interactive, and user-friendly applications
-              that engage users and deliver real value.
-            </p>
 
-            <div class="info">
-              <div class="info-hlp">
-                <div class="label">Name</div>
-                <div class="info-label">Umar Ali Shaikh</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Nationality</div>
-                <div class="info-label">India</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Phone</div>
-                <div class="info-label">+91 9833075638</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Email</div>
-                <div class="info-label">Umarali4430@gmail.com</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Experience</div>
-                <div class="info-label">1.5 years</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Freelance</div>
-                <div class="info-label">Available</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Skype</div>
-                <div class="info-label">umarali.skype</div>
-              </div>
-              <div class="info-hlp">
-                <div class="label">Language</div>
-                <div class="info-label">Hindi, English</div>
-              </div>
+    <div class="carousel my-project">
+
+      <!-- list item -->
+      <div class="list">
+
+        <!-- netflix clone -->
+        <div class="item">
+          <img src="image/Netflixclone.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Netflix Clone</div>
+            <div class="topic">OTT Platform</div>
+            <div class="des">
+              The Netflix Clone is a custom-built OTT interface designed to replicate the modern,
+              cinematic experience of Netflix. This project showcases my skills in creating dynamic
+              sliders, smooth animations, responsive layouts, and a user-friendly interface. It includes
+              category-wise browsing, clean UI components, and interactive elements that enhance the
+              overall viewing experience. Built with attention to detail, this clone demonstrates my
+              ability to design and develop real-world streaming platforms.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">
+                  SEE MORE
+                </a>
+              </button>
             </div>
           </div>
         </div>
 
-        <div role="listitem" class="item experience-item">
-          <div class="item_content">
-            <h2 class="item_number">Experience</h2>
-            <div class="my-resume-section-job my-resume-section-job1">
-              <div class="meta">
-                <div id="jd1" class="title">Web Developer —<span class="portfolio-redcolor"> Right
-                    Door</span></div>
-                <div class="date">2024 – 2025</div>
-              </div>
-              <div class="desc">
-                <ul>
-                  <li>Contributed to designing user-centered digital experiences, focusing on
-                    clean interfaces and intuitive user journeys.</li>
-                  <li>Collaborated with developers and product teams to translate design concepts
-                    into functional products.</li>
-                  <li>Improved product usability through iterative prototyping, testing, and
-                    design refinements.</li>
-                </ul>
-              </div>
+        <!-- GTA 6 Game -->
+        <div class="item">
+          <img src="image/gta6.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">GTA 6 Clone</div>
+            <div class="topic">Game Platform</div>
+            <div class="des">
+              The GTA 6 Clone is a high-quality game interface concept inspired by the upcoming
+              Grand Theft Auto VI. This project focuses on recreating the cinematic UI, bold
+              visuals, and immersive experience seen in modern AAA game platforms. It includes
+              smooth animations, interactive menu screens, responsive layouts, and dynamic
+              transitions that mimic the official game style. This clone highlights my ability
+              to design realistic game UIs, create polished frontend interactions, and develop
+              visually engaging digital experiences.
             </div>
-            <div class="my-resume-section-job my-resume-section-job1">
-              <div class="meta">
-                <div id="jd2" class="title">Web Developer — <span class="portfolio-redcolor">Pittie
-                    Group</span></div>
-                <div class="date">2025 – Present</div>
-              </div>
-              <div class="desc">
-                <ul>
-                  <li>Leading design initiatives for digital and brand projects across the Pittie
-                    Group.</li>
-                  <li>Working closely with cross-functional teams to define design strategy and
-                    maintain consistency across platforms.</li>
-                  <li>Implementing creative solutions that align with company goals for innovation
-                    and
-                    customer engagement.</li>
-                </ul>
-              </div>
+            <div class="buttons">
+              <button>
+                <a href="">
+                  SEE MORE
+                </a>
+              </button>
             </div>
           </div>
         </div>
 
-        <div role="listitem" class="item education-item">
-          <div class="item_content">
-            <h2 class="item_number">Education</h2>
-            <div class="my-resume-section-education">
-              <div class="meta">
-                <div id="jd1" class="title">Shivaji Vidhyalaya</div>
-                <div class="date">2021 – 2022</div>
-              </div>
-              <div class="meta-field">
-                <span>HSC</span>
-              </div>
+        <!-- Pittie Consumer -->
+        <div class="item">
+          <img src="image/Pittieconsumer.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Pittie Consumer</div>
+            <div class="topic">Pittie Group</div>
+            <div class="des">
+              Pittie Consumer is a fully functional corporate website developed for the Pittie Group to
+              showcase their diverse FMCG products and growing brand presence. This project focuses on
+              creating a clean, modern, and professional interface with smooth navigation, responsive
+              layouts, and well-structured content sections. I implemented dynamic components,
+              user-friendly forms, and a visually appealing product display to enhance the overall
+              user experience. This website demonstrates my skills in frontend development, UI/UX design,
+              and building real-world client projects with attention to detail and brand consistency.
             </div>
-            <div class="my-resume-section-education">
-              <div class="meta">
-                <div id="jd2" class="title">KMSP Bhatia</div>
-                <div class="date">2023 – 2024</div>
-              </div>
-              <div class="meta-field">
-                <span>SSC</span>
-              </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
             </div>
           </div>
-          <div class="item_content">
-            <h2 class="item_number">Certification</h2>
-            <div class="my-resume-section-education">
-              <div class="meta">
-                <div id="jd1" class="title">Arena Animation</div>
-                <div class="date">2023 – 2025</div>
-              </div>
-              <div class="meta-field">
-                <span>Completed</span>
-              </div>
+
+        </div>
+
+        <!-- Pittie Consumer V2-->
+        <div class="item">
+          <img src="image/Pittieconsumerv2.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Pittie Consumer V2</div>
+            <div class="topic">Pittie Group</div>
+            <div class="des">
+              Pittie Consumer is a fully functional corporate website developed for the Pittie Group to
+              showcase their diverse FMCG products and growing brand presence. This project focuses on
+              creating a clean, modern, and professional interface with smooth navigation, responsive
+              layouts, and well-structured content sections. I implemented dynamic components,
+              user-friendly forms, and a visually appealing product display to enhance the overall
+              user experience. This website demonstrates my skills in frontend development, UI/UX design,
+              and building real-world client projects with attention to detail and brand consistency.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
             </div>
           </div>
         </div>
 
-        <div role="listitem" class="item skills-section-hlp">
-          <div class="item_content">
-            <section class="skills-section">
-              <div class="skills-container">
+        <!-- Agency website -->
+        <div class="item">
+          <img src="image/Agenchy.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Agency Website</div>
+            <div class="topic">Oneshot</div>
+            <div class="des">
+              The Oneshot Agency website is a modern and visually engaging portfolio platform designed
+              for creative and digital service providers. This project focuses on clean layouts, smooth
+              animations, and a professional presentation of services, case studies, and team details.
+              I developed a responsive design that works seamlessly across devices and implemented
+              interactive UI elements to enhance user engagement. This project highlights my skills in
+              frontend development, UI/UX design, and building elegant websites tailored for agencies
+              and professional brands.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
 
-                <div class="skill-item">
-                  <img src="image/javascript-736400.svg" alt="JavaScript icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">JavaScript</h4>
-                    <p class="skill-level">90%</p>
-                  </div>
-                </div>
+        </div>
 
-                <div class="skill-item">
-                  <img src="image/react-js-icon.svg" alt="React JS icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">React JS</h4>
-                    <p class="skill-level">90%</p>
-                  </div>
-                </div>
+        <!-- portfolio v1 -->
+        <div class="item">
+          <img src="image/Portfoliov1.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Portfolio V1</div>
+            <div class="topic">Portfolio</div>
+            <div class="des">
+              Portfolio V1 is my first personal portfolio design, created to showcase my early work,
+              creative approach, and growing skills in frontend development. This version focuses on a
+              clean layout, smooth scrolling effects, and a structured presentation of projects and
+              services. It was built as a foundation for exploring UI/UX design, animations, and
+              responsive web development. Portfolio V1 represents the starting point of my journey as a
+              developer and reflects how my design style and technical abilities have evolved over time.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
+        </div>
 
-                <div class="skill-item">
-                  <img src="image/icon1.png" alt="Figma icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">Figma</h4>
-                    <p class="skill-level">70%</p>
-                  </div>
-                </div>
 
-                <div class="skill-item">
-                  <img src="image/html.png" alt="html icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">HTML</h4>
-                    <p class="skill-level">80%</p>
-                  </div>
-                </div>
+        <!-- Gym intro -->
+        <div class="item">
+          <img src="image/gymintero.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">GYM Website</div>
+            <div class="topic">Gym Introduction</div>
+            <div class="des">
+              The Gym Website is a modern fitness platform designed to introduce gym services, training
+              programs, and membership plans in a clean and engaging way. This project features energetic
+              visuals, bold typography, smooth animations, and a fully responsive layout that works
+              perfectly across devices. I designed user-friendly sections for workouts, trainers, pricing,
+              and contact details to ensure a seamless browsing experience. This project highlights my
+              ability to build attractive, high-performance websites tailored for fitness and lifestyle
+              brands.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
+        </div>
 
-                <div class="skill-item">
-                  <img src="image/CSS-Icon.svg" alt="css icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">CSS</h4>
-                    <p class="skill-level">80%</p>
-                  </div>
-                </div>
 
-                <div class="skill-item">
-                  <img src="image/Gsap.svg" alt="gsap icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">GSAP</h4>
-                    <p class="skill-level">85%</p>
-                  </div>
-                </div>
+        <!-- restaurant -->
+        <div class="item">
+          <img src="image/restaurant.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Restaurant Website</div>
+            <div class="topic">Foodies</div>
+            <div class="des">
+              The Foodies Restaurant Website is a modern and visually rich platform designed to showcase
+              dishes, menu categories, chef specials, and dining experience in an engaging way. This
+              project features appetizing visuals, smooth animations, and a fully responsive layout that
+              enhances the user’s browsing experience. I created clean sections for the menu,
+              reservations,
+              about us, and contact details to make the website both attractive and functional. This
+              project highlights my skills in UI/UX design, frontend development, and creating elegant,
+              food-themed web interfaces.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
+        </div>
 
-                <div class="skill-item">
-                  <img src="image/Boostrap.svg" alt="Boostrap icon" class="skill-icon">
 
-                  <div class="skill-content">
-                    <h4 class="skill-name">Boostrap</h4>
-                    <p class="skill-level">85%</p>
-                  </div>
-                </div>
+        <!-- restaurant V2-->
+        <div class="item">
+          <img src="image/restaurantintro.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Restaurant2 Website</div>
+            <div class="topic">MR. Royals</div>
+            <div class="des">
+              The MR. Royals Restaurant Website is a classy and elegant food platform designed to
+              highlight
+              premium dishes, royal ambience, and a fine-dining experience. This project features a rich
+              color palette, smooth animations, and a fully responsive layout that works beautifully
+              across
+              all devices. I created structured sections for the menu, chef specials, reservations, and
+              customer reviews to offer a complete and engaging user experience. This website showcases my
+              ability to design luxurious, visually appealing, and user-friendly restaurant interfaces.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
 
-                <div class="skill-item">
-                  <img src="image/wordpress.png" alt="wordpress icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">Wordpress</h4>
-                    <p class="skill-level">85%</p>
-                  </div>
-                </div>
+        </div>
 
-                <div class="skill-item">
-                  <svg class="skill-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-                    <defs>
-                      <linearGradient id="a" x1="50%" x2="50%" y1="0%" y2="100%">
-                        <stop offset="0%" stop-color="#0080FF" />
-                        <stop offset="100%" stop-color="#00B7FF" />
-                      </linearGradient>
-                      <linearGradient id="b" x1="50%" x2="50%" y1="0%" y2="100%">
-                        <stop offset="0%" stop-color="#00B7FF" />
-                        <stop offset="100%" stop-color="#0080FF" />
-                      </linearGradient>
-                    </defs>
-                    <g fill="none">
-                      <path fill="url(#a)"
-                        d="M97.5869496,9.51093626 C115.83804,20.7848256 128,40.9721238 128,64 C128,99.346224 99.346224,128 64,128 C56.2920179,128 48.9022945,126.637372 42.0606106,124.137797 L41.3296807,123.865645 L42.5199148,123.48344 L44.0499006,122.981598 L44.8047554,122.729449 L44.8047554,122.729449 L45.5528525,122.476476 L47.0287766,121.968044 L48.477679,121.456268 L49.8995657,120.941118 L51.2944429,120.422561 L51.9817549,120.161995 L53.3361292,119.638268 C54.7663971,119.077773 56.1505947,118.511327 57.4887554,117.938757 L58.4837445,117.508179 L59.7032082,116.966702 C60.2391997,116.725238 60.7672019,116.482694 61.2872173,116.239057 L62.0612505,115.87278 L63.1998411,115.320271 L63.7590314,115.042615 L63.7590314,115.042615 L64.3114862,114.76402 L65.3961918,114.203997 C74.5017145,109.427674 80.6883363,104.239002 83.9729034,98.5499653 C90.9321253,86.4962393 84.8542511,73.6150855 67.4065187,60.4830885 L65.9866432,59.4185495 L65.1241488,58.7570907 L64.2867532,58.1006716 L63.4743719,57.4492672 L62.6869203,56.8028527 L62.3025167,56.4815088 L62.3025167,56.4815088 L61.9243138,56.161403 L61.1864678,55.5248932 L60.6492814,55.0507377 L60.6492814,55.0507377 L60.1259396,54.5793364 L59.4496246,53.9550673 L58.7977741,53.3356509 L58.1703034,52.7210621 L57.865684,52.4155703 L57.865684,52.4155703 L57.5671278,52.1112761 L56.9881629,51.5062679 C50.0910281,44.1742986 48.550875,37.8976624 51.6821025,32.4742173 C53.275799,29.713854 56.0387768,26.999998 59.9662039,24.3569485 L60.4430842,24.040124 L61.1940488,23.5569049 C61.5336196,23.3425039 61.8809347,23.1285905 62.2359916,22.9151777 L62.7743828,22.5954356 L63.603739,22.1172522 L64.4592124,21.6408141 L65.1179529,21.2846511 L65.1179529,21.2846511 L65.7913778,20.9295026 L66.7121153,20.4575739 C67.4124544,20.1043216 68.1348104,19.7526404 68.8791706,19.4025938 L69.6308651,19.0530944 L70.6559388,18.5888147 L71.1782513,18.3574212 L72.2424237,17.8961475 L72.7842819,17.6662758 L73.887538,17.2080833 L74.4489343,16.9797709 L75.5912592,16.5247346 L76.1721862,16.2980192 L77.353565,15.8462143 L78.5609715,15.3966054 L79.174433,15.1726349 L80.4208685,14.7263826 L81.6933149,14.2824097 L82.9917658,13.8407497 L83.6507409,13.6207974 L84.9881859,13.1826691 L86.3516187,12.7469371 L87.7410327,12.3136347 L89.1564212,11.8827954 L90.5977776,11.4544525 L92.4359804,10.9225852 L94.3147346,10.394736 L96.6227494,9.76671243 L97.5869496,9.51093626 Z" />
-                      <path fill="url(#b)"
-                        d="M64,0 C71.7830114,0 79.2415381,1.38928435 86.1411179,3.93339103 L86.8782091,4.21038217 L86.4108627,4.35186467 L84.1313124,5.0545346 L83.3848908,5.2905768 L81.9121853,5.76541455 L80.4663248,6.24395126 L79.0473024,6.72622031 L77.6551115,7.21225509 L76.2897456,7.70208898 L75.6171199,7.94844102 L73.9648828,8.56854028 L72.3545311,9.19471909 L71.0963985,9.70008321 L70.4773795,9.95425044 L69.2594321,10.4655761 C56.8123589,15.7699668 48.6548341,21.7176 44.7538993,28.4742173 C37.9453585,40.2669559 44.1208291,52.9796592 61.5702618,66.1081375 L62.9900625,67.1727537 L63.8522936,67.8346365 L64.6892575,68.491774 L65.09829,68.8185721 L65.8975078,69.468645 L66.4804703,69.9531308 L66.4804703,69.9531308 L67.0493707,70.4349994 L67.7860906,71.0734406 L68.1451248,71.3909334 L68.8445933,72.0224812 C69.2263095,72.3720718 69.5965761,72.7195512 69.9554568,73.0649416 L70.4852463,73.5814631 L71.248012,74.3504059 L71.9726186,75.1123909 C78.8402712,82.495364 80.3081527,88.8974997 77.0447002,94.5499653 C74.933031,98.2074836 70.9013706,101.807999 64.958951,105.303275 L64.4134675,105.620736 L63.5293583,106.121564 L62.6189315,106.620891 C62.1058295,106.897871 61.5805462,107.174142 61.0430864,107.449677 L60.227765,107.862426 L59.2252746,108.356245 L58.1964941,108.848418 L57.1414295,109.338914 L56.6040425,109.583523 L55.5095633,110.071443 L54.3888152,110.557607 L53.2418044,111.041982 L52.6584524,111.283488 L51.4720589,111.76512 L50.869019,112.005238 L50.869019,112.005238 L50.259418,112.244884 L49.0205357,112.722748 L47.755418,113.19868 L46.4640712,113.672647 L45.1465013,114.144619 L43.8027143,114.614564 L43.1209914,114.848766 L41.7378904,115.315609 L41.0365138,115.548243 L39.6141124,116.011914 L38.1655184,116.47343 L36.3179518,117.047246 L34.4294807,117.617582 L32.8892605,118.071305 L30.739698,118.689489 C12.3072163,107.455464 0,87.1649844 0,64 C0,28.653776 28.653776,0 64,0 Z" />
-                    </g>
-                  </svg>
-                  <div class="skill-content">
-                    <h4 class="skill-name">Swipper JS</h4>
-                    <p class="skill-level">85%</p>
-                  </div>
-                </div>
+        <!-- To Do List -->
+        <div class="item">
+          <img src="image/ToDolist.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">To Do List</div>
+            <div class="topic">Work List</div>
+            <div class="des">
+              The To-Do List is a simple and efficient productivity app designed to help users manage
+              their daily tasks with ease. This project includes features like adding, editing, and
+              deleting tasks, along with a clean and minimal user interface. It focuses on smooth
+              functionality, responsive design, and a user-friendly experience. This project highlights
+              my ability to build practical, interactive, and well-structured web applications.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
+        </div>
 
-                <div class="skill-item">
-                  <img src="image/uiux.png" alt="UI/UX icon" class="skill-icon">
-                  <div class="skill-content">
-                    <h4 class="skill-name">UI/UX Design</h4>
-                    <p class="skill-level">85%</p>
-                  </div>
-                </div>
 
-              </div>
-            </section>
+        <!-- weather -->
+        <div class="item">
+          <img src="image/Whether.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Weather Website</div>
+            <div class="topic">Today's Weather</div>
+            <div class="des">
+              The Weather Website is a live weather forecasting platform that provides real-time
+              temperature,
+              humidity, wind details, and overall climate conditions for any location. It features a clean
+              and
+              modern interface with smooth animations and a fully responsive design. Using API-powered
+              data
+              fetching, this project highlights my skills in JavaScript, API integration, and creating
+              dynamic,
+              user-friendly web applications.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
 
+        </div>
+
+        <!-- Pittie Logistics -->
+        <div class="item">
+          <img src="image/Pittielogistics.png">
+          <div class="content">
+            <div class="author">Umar Ali Shaikh</div>
+            <div class="title">Pittie Logistics</div>
+            <div class="topic">Pittie Group</div>
+            <div class="des">
+              Pittie Logistics is a fully functional corporate website designed to showcase the logistics
+              operations, supply-chain solutions, and transportation services offered by the Pittie Group.
+              This project focuses on a clean and professional interface, smooth navigation, and a
+              responsive
+              layout that works seamlessly across all devices. I implemented well-structured service
+              sections,
+              contact forms, and informational pages to provide a clear and user-friendly experience. This
+              project reflects my strong frontend development skills and my ability to deliver real-world
+              business websites with attention to detail and brand consistency.
+            </div>
+            <div class="buttons">
+              <button>
+                <a href="">SEE MORE</a>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- list thumnail -->
+      <div class="thumbnail">
+        <div class="item">
+          <img src="image/Netflixclone.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/gta6.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Pittieconsumer.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Pittieconsumerv2.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Agenchy.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Portfoliov1.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/gymintero.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/restaurant.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/restaurantintro.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/ToDolist.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Whether.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img src="image/Pittielogistics.png">
+          <div class="content">
+            <div class="title">
+              Name Slider
+            </div>
+            <div class="description">
+              Description
+            </div>
           </div>
         </div>
       </div>
+      <!-- next prev -->
+
+      <div class="arrows">
+        <button id="prev"><i class="fa-solid fa-arrow-left"></i></button>
+        <button id="next"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+      <!-- time running -->
+      <div class="time"></div>
     </div>
+
   </section>
 
 
@@ -558,131 +767,127 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 
   <script>
+    /* ---------------------------------------------
+       OPTIMIZED CUSTOM CAROUSEL
+    ---------------------------------------------- */
 
-    // -----------------------------
-    // Register GSAP & ScrollTrigger
-    // -----------------------------
-    gsap.registerPlugin(ScrollTrigger);
+    function initCarousel() {
+      const carousel = document.querySelector(".carousel");
+      if (!carousel) return;
 
-    const resumeSection = document.querySelector(".my-resume-section .scroll-section");
-    const wrapper = resumeSection.querySelector(".list");
-    const items = wrapper.querySelectorAll(".item");
-    const gap = 50;        // default gap
-    const extraGap = 100;  // extra gap between 1st and 2nd item
+      const slider = carousel.querySelector(".list");
+      const thumbs = carousel.querySelector(".thumbnail");
+      const nextBtn = document.getElementById("next");
+      const prevBtn = document.getElementById("prev");
 
-    // -----------------------------
-    // STEP 1️⃣ : Set parent height dynamically
-    // -----------------------------
-    function setSectionHeight() {
-      let totalHeight = 0;
-      items.forEach((item, index) => {
-        totalHeight += item.offsetHeight + gap;
-        if (index === 0) totalHeight += extraGap; // extra gap after first item
-      });
-      document.querySelector(".my-resume-section").style.height = totalHeight + 120 + "px";
-    }
-    setSectionHeight();
+      if (!slider || !nextBtn || !prevBtn) return;
 
-    // -----------------------------
-    // STEP 2️⃣ : Initial positioning of each .item
-    // -----------------------------
-    items.forEach((item, index) => {
-      item.style.position = "absolute";
-      item.style.top = "0";
-      item.style.transform = "translateX(-50%)";
+      let autoTimer;
+      let isAnimating = false;
+      const AUTO_TIME = 7000;
+      const ANIM_TIME = window.innerWidth < 768 ? 1200 : 3000;
 
-      if (index === 0) {
-        gsap.set(item, { y: 0 });
-        item.classList.add("active");
-      } else {
-        // add extra gap only for second item
-        const extra = index === 1 ? extraGap : 0;
-        gsap.set(item, { y: index * (item.offsetHeight + gap) + extra });
+      const slides = () => [...slider.children];
+      const thumbItems = () => [...thumbs.children];
+
+      function resetAuto() {
+        clearTimeout(autoTimer);
+        autoTimer = setTimeout(() => rotate("next"), AUTO_TIME);
       }
-    });
 
-    // -----------------------------
-    // STEP 3️⃣ : Calculate Scroll End dynamically
-    // -----------------------------
-    function calcScrollEnd() {
-      let total = 0;
-      items.forEach((item, index) => {
-        total += item.offsetHeight + gap;
-        if (index === 0) total += extraGap; // extra gap after first item
-      });
-      return total - window.innerHeight;
+      function rotate(type) {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        carousel.classList.add(type);
+
+        if (type === "next") {
+          slider.append(slides()[0]);
+          thumbs.append(thumbItems()[0]);
+        } else {
+          slider.prepend(slides().at(-1));
+          thumbs.prepend(thumbItems().at(-1));
+        }
+
+        setTimeout(() => {
+          carousel.classList.remove(type);
+          isAnimating = false;
+        }, ANIM_TIME);
+
+        resetAuto();
+      }
+
+      nextBtn.onclick = () => rotate("next");
+      prevBtn.onclick = () => rotate("prev");
+
+      resetAuto();
     }
 
-    // -----------------------------
-    // STEP 4️⃣ : ScrollTrigger Timeline
-    // -----------------------------
-    resumeSection.style.minHeight = "100vh";
+    /* ---------------------------------------------
+       MOBILE FADE SLIDER (LIGHTWEIGHT)
+    ---------------------------------------------- */
+    function initMobileCarousel() {
+      const items = document.querySelectorAll(".carousel .list .item");
+      const next = document.getElementById("next");
+      const prev = document.getElementById("prev");
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: resumeSection,
-        start: "top top",
-        end: () => "+=" + calcScrollEnd(),
-        scrub: 1,
-        pin: true,
-        invalidateOnRefresh: true,
-        onUpdate: self => {
-          const spacer = self.pinSpacer;
-          if (spacer) {
-            spacer.style.setProperty("padding-top", "0", "important");
-            spacer.style.setProperty("margin-top", "0", "important");
-            spacer.style.setProperty("padding-bottom", "0", "important");
-            spacer.style.setProperty("margin-bottom", "0", "important");
-          }
-        },
-      },
-    });
+      let index = 0;
+      let busy = false;
 
-    // -----------------------------
-    // STEP 5️⃣ : Animate each .item card
-    // -----------------------------
-    items.forEach((item, index) => {
-      if (index === 0) return;
-      const prev = items[index - 1];
-
-      tl.to(prev, { scale: 0.9, borderRadius: "10px", duration: 0.8 }, "+=0");
-      tl.to(
-        item,
-        {
-          y: 0,
-          duration: 1,
-          ease: "power1.out",
-          onStart: () => {
-            items.forEach((i) => i.classList.remove("active"));
-            item.classList.add("active");
-            const video = item.querySelector("video");
-            if (video) video.play();
-          },
-        },
-        "<0.2"
-      );
-    });
-
-    // -----------------------------
-    // STEP 6️⃣ : Recalculate on resize
-    // -----------------------------
-    window.addEventListener("resize", () => {
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
-
-      setSectionHeight();
-      items.forEach((item, index) => {
-        if (index === 0) {
-          gsap.set(item, { y: 0 });
-        } else {
-          const extra = index === 1 ? extraGap : 0;
-          gsap.set(item, { y: index * (item.offsetHeight + gap) + extra });
-        }
+      items.forEach((el, i) => {
+        el.style.opacity = i === 0 ? 1 : 0;
+        el.style.position = "absolute";
       });
 
-      ScrollTrigger.refresh();
-    });
+      function show(i, dir) {
+        if (busy) return;
+        busy = true;
 
+        gsap.to(items[index], {
+          opacity: 0,
+          x: -30 * dir,
+          duration: 0.4
+        });
+
+        gsap.fromTo(items[i],
+          { opacity: 0, x: 30 * dir },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.4,
+            onComplete: () => {
+              index = i;
+              busy = false;
+            }
+          }
+        );
+      }
+
+      next.onclick = () => show((index + 1) % items.length, 1);
+      prev.onclick = () => show((index - 1 + items.length) % items.length, -1);
+    }
+
+    /* ---------------------------------------------
+       INIT HANDLER
+    ---------------------------------------------- */
+    function init() {
+      if (window.innerWidth > 576) {
+        initCarousel();
+      } else {
+        initMobileCarousel();
+      }
+    }
+
+    init();
+
+    /* REINIT ON RESIZE (DEBOUNCED) */
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => location.reload(), 300);
+    });
   </script>
+
 
 </body>
 
