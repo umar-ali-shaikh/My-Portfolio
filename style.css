@@ -133,6 +133,7 @@ img {
     height: 10px;
     border-radius: 50px;
     z-index: 1111111111;
+    position: fixed;
 }
 
 
@@ -362,11 +363,10 @@ img {
     max-height: 650px;
     position: relative;
     background-image: url(./image/herosection.png);
-    /* background-position: center right; */
     background-position: 85%;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-bottom: 250px;
+    margin-bottom: 200px;
 }
 
 .hero-section .container {
@@ -556,7 +556,7 @@ img {
      about us 
 ============================== */
 .aboutus-section {
-    margin: 100px 0;
+    margin: 50px 0;
 }
 
 .aboutus-section .container {
@@ -576,6 +576,7 @@ img {
 .section-mainhd {
     font-size: 48px;
 }
+
 
 .aboutus-section p strong {
     color: var(--text2-color);
@@ -651,6 +652,7 @@ img {
     background: rgba(255, 255, 255, 0.01);
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
+    z-index: 1;
 }
 
 .hero-section-img-hlp-icon3 img {
@@ -684,7 +686,7 @@ img {
 .my-project-section {
     width: 100%;
     height: 100%;
-    padding-top: 50px;
+    margin-top: 50px;
     overflow: hidden;
 }
 
@@ -699,6 +701,11 @@ img {
     width: 100vw;
     overflow: hidden;
     position: relative;
+}
+
+.my-project-section .section-mainhd {
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .carousel .list .item {
@@ -1116,7 +1123,8 @@ img {
 .pin-spacer {
     padding: 0 !important;
     margin: 0 auto !important;
-    min-height: calc(600px * 4 + 50px * 3 + 100px);
+    height: calc(100% + 100px) !important;
+    min-height: calc(100% + 100px);
 }
 
 /* List container (stacked cards) */
@@ -1724,6 +1732,291 @@ img {
 
 
 
+/* ==============================
+   POPUP OVERLAY
+============================== */
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.popup-overlay.active {
+    display: flex;
+}
+
+/* ==============================
+   POPUP BOX
+============================== */
+.popup-contact {
+    width: 90%;
+    max-width: 1000px;
+    background: #0b0b0b;
+    color: #fff;
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    animation: scaleIn 0.3s ease;
+    will-change: transform, opacity;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(.92);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+    position: absolute;
+    top: 18px;
+    right: 22px;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* ==============================
+   GRID
+============================== */
+.popup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 40px;
+}
+
+/* ==============================
+   LEFT CONTACT INFO
+============================== */
+.contact-info {
+    background: linear-gradient(160deg, #0f0f0f, #060606);
+    padding: 35px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.contact-info::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(253, 85, 35, 0.15), transparent 60%);
+    pointer-events: none;
+}
+
+.contact-info h3 a {
+    font-size: 26px;
+}
+
+.contact-info h3 {
+    color: #FD5523;
+    margin-bottom: 30px;
+}
+
+.contact-info a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-info a:hover {
+    color: var(--text1-color);
+}
+
+/* INFO BLOCKS */
+.info-block {
+    margin-bottom: 25px;
+}
+
+.info-block h4 {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #aaa;
+    margin-bottom: 8px;
+}
+
+.info-block p {
+    font-size: 15px;
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* SOCIAL ICONS */
+.social-media {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.social-media a {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.social-media a:hover {
+    background: #FD5523;
+    border-color: #FD5523;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(253, 85, 35, 0.4);
+}
+
+/* ==============================
+   FORM
+============================== */
+.small-title {
+    color: #FD5523;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+.contact-form h2 {
+    margin: 10px 0 30px;
+    font-size: 36px;
+}
+
+.contact-form h2 span {
+    color: #FD5523;
+}
+
+.contact-form .row {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+    margin: 0;
+}
+
+.row-input-name input {
+    width: calc(100% / 2 - 10px) !important;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    background: transparent;
+    border: 1px solid #333;
+    padding: 14px;
+    border-radius: 12px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.contact-form textarea {
+    height: 120px;
+    resize: none;
+    border-radius: 18px;
+}
+
+.contact-form button {
+    padding: 14px 35px;
+    border-radius: 30px;
+    border: none;
+    background: #FD5523;
+    color: #fff;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(253, 85, 35, 0.4);
+}
+
+/* ==============================
+   CUSTOM ALERT
+============================== */
+.toast-alert {
+    position: fixed;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    transition: all 0.4s ease;
+    pointer-events: none;
+}
+
+.toast-alert.active {
+    top: 20px;
+    pointer-events: auto;
+}
+
+.toast-box {
+    background: #111;
+    color: #fff;
+    padding: 16px 22px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.toast-box.success {
+    border-left: 5px solid #00c853;
+}
+
+.toast-box.error {
+    border-left: 5px solid #ff5252;
+}
+
+.toast-close {
+    cursor: pointer;
+}
+
+
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media (max-width: 768px) {
+    .popup-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .popup-contact {
+        padding: 25px;
+    }
+
+    .contact-info h3 {
+        font-size: 22px;
+    }
+
+    .contact-form h2 {
+        font-size: 28px;
+    }
+
+    .popup-overlay {
+        position: absolute !important;
+        height: 100%;
+        max-height: 1000px;
+    }
+
+    .portfolio-dot {
+        display: none;
+    }
+}
+
+
+
+
+
+
 /* XXXL */
 @media (min-width: 1400px) {}
 
@@ -2010,6 +2303,10 @@ img {
 }
 
 @media (max-width: 576px) {
+    .hero-section {
+        margin-bottom: 150px;
+    }
+
     .carousel {
         height: 100vh;
     }
@@ -2052,8 +2349,13 @@ img {
         -webkit-overflow-scrolling: touch;
     }
 
+    .header-btn.header-btn-mobile::after {
+        display: none;
+    }
+
     .header-btn.header-btn-mobile {
         display: flex;
+        z-index: 111;
     }
 
     .header-btn-hlp {
@@ -2109,7 +2411,8 @@ img {
     }
 
     .pin-spacer {
-        min-height: calc(600px * 4 + 50px * 4 + 100px);
+        height: calc(100% + 100px) !important;
+        min-height: calc(100% + 100px);
     }
 
     .skill-item {
@@ -2137,6 +2440,7 @@ img {
         backdrop-filter: none;
         filter: none;
         background: rgba(0, 0, 0, 0.85);
+        top: 15%;
     }
 
     .carousel img,

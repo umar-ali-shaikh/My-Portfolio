@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12.0.3/swiper-bundle.min.css">
 
     <!-- css -->
-    <link rel="stylesheet" href="style.css">    
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -58,80 +58,152 @@
                     <i class="fa-solid fa-bars"></i>
                 </button>
                 <div class=" header-btn-hlp d-flex w-100 flex-row-reverse">
-                    <div class="header-btn header-btn-pc">
+                    <div class="header-btn header-btn-pc  open-form-btn" id="openForm">
                         <button type="button" class="btn btn-primary">Let's Contact</button>
                     </div>
                     <div class="navbar-collapse-pc collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ">
+                        <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                <a class="nav-link active" aria-current="page" href="#home">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">About</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    Skills
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#"></a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
+                                <a class="nav-link" href="#about">About</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#"> Contact Us</a>
+                                <a class="nav-link" href="#projects">Projects</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#resume">Resume</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#freelance">Freelance</a>
                             </li>
                         </ul>
 
-                        <div class="header-btn header-btn-mobile">
+                        <div class="header-btn header-btn-mobile open-form-btn" id="openForm">
                             <button type="button" class="btn btn-primary">Let's Contact</button>
                         </div>
                     </div>
                 </div>
                 <div class="navbar-collapse-mobile collapse navbar-collapse-hlp" id="navbarSupportedContent">
-                    <ul class="navbar-nav ">
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link active" aria-current="page" href="#home">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">About</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                Skills
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"></a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
+                            <a class="nav-link" href="#about">About</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#"> Contact Us</a>
+                            <a class="nav-link" href="#projects">Projects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#resume">Resume</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#freelance">Freelance</a>
                         </li>
 
-
+                        <div class="header-btn header-btn-mobile open-form-btn" id="openForm">
+                            <button type="button" class="btn btn-primary">Let's Contact</button>
+                        </div>
                     </ul>
-
-                    <div class="header-btn header-btn-mobile">
-                        <button type="button" class="btn btn-primary">Let's Contact</button>
-                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
+
+    <!-- Popup Overlay -->
+    <div class="popup-overlay" id="popupForm">
+        <div class="popup-contact">
+
+            <span class="close-btn" id="closeForm">&times;</span>
+
+            <div class="popup-grid">
+
+                <!-- LEFT INFO -->
+                <div class="contact-info">
+
+                    <!-- PHONE -->
+                    <h3>
+                        <a href="tel:+919833075638">+91 98330 75638</a>
+                    </h3>
+
+                    <!-- ADDRESS -->
+                    <div class="info-block">
+                        <h4><strong>Address</strong></h4>
+                        <p>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Kajupada+Pipeline+Ghascompound+Kurla+West+Mumbai+400072"
+                                target="_blank" rel="noopener noreferrer">
+                                Kajupada Pipeline ghascompound, Kurla (West), Mumbai Maharashtra 400072, India
+                            </a>
+                        </p>
+                    </div>
+
+                    <!-- EMAIL -->
+                    <div class="info-block">
+                        <h4><strong>Email</strong></h4>
+                        <p>
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=umarali4430@gmail.com"
+                                target="_blank">
+                                umarali4430@gmail.com
+                            </a>
+
+                        </p>
+                    </div>
+
+                    <!-- SOCIAL MEDIA -->
+                    <div class="info-block social-media">
+                        <a href="https://www.instagram.com/" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+
+                        <a href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+
+                        <a href="https://github.com/" target="_blank" aria-label="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT FORM -->
+                <div class="contact-form">
+                    <span class="small-title">LET’S CHAT</span>
+                    <h2>SEND A <span>MESSAGE</span></h2>
+
+                    <form id="contactForm">
+                        <div class="row row-input-name d-flex">
+                            <input type="text" name="name" placeholder="Name" required>
+                            <input type="email" name="email" placeholder="Email" required>
+                        </div>
+
+                        <input type="text" name="subject" placeholder="Subject" required>
+                        <textarea name="message" placeholder="Message" required></textarea>
+
+                        <button type="submit">Send Message</button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Overlay successdully -->
+    <div class="toast-alert" id="customAlert">
+        <div class="toast-box">
+            <div class="toast-icon" id="toastIcon"></div>
+            <p id="alertMessage"></p>
+            <span class="toast-close" id="alertClose">&times;</span>
+        </div>
+    </div>
+
     <!-- Hero Section -->
-    <section class="hero-section">
+    <section class="hero-section" id="home">
         <div class="container">
             <div class="hero-section-intro">
 
@@ -547,8 +619,9 @@
     </section>
 
 
+
     <!-- About Us -->
-    <section class="aboutus-section">
+    <section class="aboutus-section" id="about">
         <div class="container">
             <div class="hero-section-content-box">
 
@@ -613,9 +686,9 @@
 
 
     <!-- My Projects -->
-    <section class="my-project-section sectionaddactive">
+    <section class="my-project-section sectionaddactive" id="projects">
 
-        <div class="my-project-content">
+        <div class=" my-project-content">
             <h2 class="section-mainhd">
                 My Portfolio
             </h2>
@@ -1079,7 +1152,7 @@
 
 
     <!-- My Resume -->
-    <section class="my-resume-section">
+    <section class="my-resume-section" id="resume">
 
         <div class="my-resume-section-heading">
             <h2 class="section-mainhd">My Resume</h2>
@@ -1322,9 +1395,7 @@
         </div>
     </section>
 
-
-
-    <section class="freelance-section">
+    <section class="freelance-section" id="freelance">
         <div class="container">
             <div class="freelance-row">
                 <div class="freelance-row-content d-flex">
@@ -1859,7 +1930,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" defer></script>
 
     <!-- Your Main JS -->
-    <script src="script2.js"></script>
+    <script src="script2.js" defer></script>
 
 
 

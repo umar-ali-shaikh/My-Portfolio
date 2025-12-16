@@ -1,23 +1,48 @@
-/* ---------------------------------------------
-   CUSTOM MOUSE DOT + SECTION ACTIVE TRACKING
----------------------------------------------- */
+/* =========================
+   HELPERS
+========================= */
+function runIfSectionExists(selector, callback) {
+    const section = document.querySelector(selector);
+    if (!section) return;
+    callback(section);
+}
+
+function isMobile() {
+    return window.matchMedia("(max-width: 575px)").matches;
+}
+
+/* =========================
+   GSAP MOBILE SAFE CONFIG
+========================= */
+if (window.gsap && window.ScrollTrigger && isMobile()) {
+    gsap.config({ force3D: false });
+    ScrollTrigger.config({ ignoreMobileResize: true });
+}
+
+
+/* =========================
+   CUSTOM MOUSE DOT + ACTIVE SECTION
+========================= */
 document.addEventListener("DOMContentLoaded", () => {
+
     const sections = document.querySelectorAll(".sectionaddactive");
     const portfolioDot = document.querySelector(".portfolio-dot");
 
-    // Mouse dot
-    document.addEventListener("mousemove", e => {
-        if (!portfolioDot) return;
-        portfolioDot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-    });
+    if (portfolioDot) {
+        document.addEventListener("mousemove", e => {
+            portfolioDot.style.transform =
+                `translate(${e.clientX}px, ${e.clientY}px)`;
+        });
+    }
 
-    // Section active
     function checkSection() {
         const winH = window.innerHeight;
-
         sections.forEach(section => {
             const rect = section.getBoundingClientRect();
-            section.classList.toggle("active", rect.top < winH - 150 && rect.bottom > 0);
+            section.classList.toggle(
+                "active",
+                rect.top < winH - 150 && rect.bottom > 0
+            );
         });
     }
 
@@ -25,190 +50,433 @@ document.addEventListener("DOMContentLoaded", () => {
     checkSection();
 });
 
-
-/* ---------------------------------------------
-   LOADER + WAVE TRANSITION
----------------------------------------------- */
+/* =========================
+   LOADER + WAVE
+========================= */
 window.addEventListener("load", () => {
-    const wave = document.querySelector('.wave-svg');
-    const loader = document.getElementById('portfolioLoader');
+    const wave = document.querySelector(".wave-svg");
+    const loader = document.getElementById("portfolioLoader");
 
-    if (wave) wave.style.transform = 'translateY(-150vh)';
-    setTimeout(() => loader?.classList.add('fade-out'), 2500);
+    if (wave) wave.style.transform = "translateY(-150vh)";
+    setTimeout(() => loader?.classList.add("fade-out"), 2500);
 });
 
+/* =========================
+   MARQUEE (SECTION BASED)
+========================= */
+function createControlledMarquee({
+    sectionSelector,
+    trackSelector,
+    itemSelector,
+    speed = 100,
+    reverse = false
+}) {
+    const section = document.querySelector(sectionSelector);
+    if (!section) return;
 
-/* ---------------------------------------------
-   UNIVERSAL MARQUEE (Skills + Footer)
----------------------------------------------- */
-function createMarquee(trackSelector, itemSelector, speed = 100, reverse = false) {
-    const track = document.querySelector(trackSelector);
+    const track = section.querySelector(trackSelector);
     if (!track) return;
 
-    const items = gsap.utils.toArray(itemSelector);
-    let totalWidth = items.reduce((sum, item) => sum + item.offsetWidth + 50, 0);
+    let tween = null;
 
-    const fromX = reverse ? -(totalWidth / 2) : 0;
-    const toX = reverse ? 0 : -(totalWidth / 2);
+    function startMarquee() {
+        if (tween) return; // already running
 
-    gsap.fromTo(track, { x: fromX }, {
-        x: toX,
-        duration: speed,
-        ease: "linear",
-        repeat: -1
-    });
-}
+        const items = gsap.utils.toArray(itemSelector, section);
+        if (!items.length) return;
 
-// MAIN SKILLS
-createMarquee(".animated-skills-hlp .animated-skills", ".animated-skills-wrapper", 100);
+        const totalWidth = items.reduce(
+            (sum, item) => sum + item.getBoundingClientRect().width + 50,
+            0
+        );
 
-// FOOTER SLIDER 1
-createMarquee(".animated-contactslide .animated-skills-hlp-cross1 .animated-skills",
-    ".animated-skills-hlp-cross1 .animated-skills-wrapper",
-    50);
-
-// FOOTER SLIDER 2 (Reverse)
-createMarquee(".animated-contactslide .animated-skills-hlp-cross2 .animated-skills",
-    ".animated-skills-hlp-cross2 .animated-skills-wrapper",
-    50, true);
-
-
-
-
-/* ---------------------------------------------
-CUSTOM CAROUSEL (Optimized)
----------------------------------------------- */
-if (window.innerWidth >= 576) {
-    const nextBtn = document.getElementById('next');
-    const prevBtn = document.getElementById('prev');
-    const carousel = document.querySelector('.carousel');
-
-    if (carousel && nextBtn && prevBtn) {
-
-        const slider = carousel.querySelector('.list');
-        const thumbs = carousel.querySelector('.thumbnail');
-
-        let autoNextTimer;
-        const TIME_AUTO = 7000;
-        const TIME_ANIM = window.innerWidth < 768 ? 1200 : 3000;
-
-
-        function resetAutoNext() {
-            clearTimeout(autoNextTimer);
-            autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
-        }
-
-        function rotateItems(type) {
-            const slides = [...slider.children];
-            const thumbItems = [...thumbs.children];
-
-            carousel.classList.add(type);
-
-            if (type === 'next') {
-                slider.appendChild(slides[0]);
-                thumbs.appendChild(thumbItems[0]);
-            } else {
-                slider.prepend(slides.at(-1));
-                thumbs.prepend(thumbItems.at(-1));
-            }
-
-            setTimeout(() => {
-                carousel.classList.remove(type);
-                nextBtn.style.pointerEvents =
-                    prevBtn.style.pointerEvents = "auto";
-            }, TIME_ANIM);
-
-            resetAutoNext();
-        }
-
-        nextBtn.onclick = () => {
-            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-            rotateItems("next");
-        };
-
-        prevBtn.onclick = () => {
-            nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
-            rotateItems("prev");
-        };
-
-        resetAutoNext();
-    }
-}
-
-
-if (window.innerWidth <= 576) {
-
-    const carousel = document.querySelector('.carousel');
-    const list = carousel.querySelector('.list');
-    const items = Array.from(list.children);
-    const next = document.getElementById('next');
-    const prev = document.getElementById('prev');
-
-    let index = 0;
-    let isAnimating = false;
-
-    // Initial state
-    gsap.set(items, {
-        opacity: 0,
-        scale: 0.9
-    });
-
-    gsap.set(items[0], {
-        opacity: 1,
-        scale: 1
-    });
-
-    function showSlide(newIndex, direction = 1) {
-        if (isAnimating) return;
-        isAnimating = true;
-
-        const current = items[index];
-        const nextItem = items[newIndex];
-
-        const tl = gsap.timeline({
-            onComplete: () => {
-                index = newIndex;
-                isAnimating = false;
-            }
-        });
-
-        tl.to(current, {
-            x: -50 * direction,
-            opacity: 0,
-            scale: 0.95,
-            duration: 0.5,
-            ease: "power2.out"
-        });
-
-        tl.fromTo(
-            nextItem,
+        tween = gsap.fromTo(
+            track,
+            { x: reverse ? -(totalWidth / 2) : 0 },
             {
-                x: 50 * direction,
-                opacity: 0,
-                scale: 0.95
-            },
-            {
-                x: 0,
-                opacity: 1,
-                scale: 1,
-                duration: 0.5,
-                ease: "power2.out"
-            },
-            "-=0.3"
+                x: reverse ? 0 : -(totalWidth / 2),
+                duration: speed,
+                ease: "linear",
+                repeat: -1
+            }
         );
     }
 
-    next.addEventListener("click", () => {
-        const newIndex = (index + 1) % items.length;
-        showSlide(newIndex, 1);
-    });
+    function stopMarquee() {
+        if (!tween) return;
 
-    prev.addEventListener("click", () => {
-        const newIndex = (index - 1 + items.length) % items.length;
-        showSlide(newIndex, -1);
+        tween.kill();
+        tween = null;
+
+        // 🔥 reset position
+        gsap.set(track, { x: 0 });
+    }
+
+    // 👀 Observe section visibility
+    const observer = new IntersectionObserver(
+        ([entry]) => {
+            if (entry.isIntersecting) {
+                startMarquee();
+            } else {
+                stopMarquee();
+            }
+        },
+        {
+            threshold: 0.3 // 30% visible
+        }
+    );
+
+    observer.observe(section);
+}
+
+
+// Skills
+createControlledMarquee({
+    sectionSelector: ".animated-skills-hlp",
+    trackSelector: ".animated-skills",
+    itemSelector: ".animated-skills-wrapper",
+    speed: 100
+});
+
+// Footer marquees
+createControlledMarquee({
+    sectionSelector: ".animated-skills-hlp-cross1",
+    trackSelector: ".animated-skills",
+    itemSelector: ".animated-skills-wrapper",
+    speed: 50
+});
+
+createControlledMarquee({
+    sectionSelector: ".animated-skills-hlp-cross2",
+    trackSelector: ".animated-skills",
+    itemSelector: ".animated-skills-wrapper",
+    speed: 50,
+    reverse: true
+});
+
+
+/* =========================
+   CAROUSEL (RESPONSIVE + CLEANUP)
+========================= */
+runIfSectionExists(".carousel", () => {
+
+    let cleanup;
+
+    function init() {
+        cleanup?.();
+        cleanup = isMobile()
+            ? initMobileCarousel()
+            : initDesktopCarousel();
+    }
+
+    init();
+
+    window.addEventListener("resize", () => {
+        clearTimeout(window.__carouselResize);
+        window.__carouselResize = setTimeout(init, 300);
     });
+});
+
+function initDesktopCarousel() {
+
+    const carousel = document.querySelector(".carousel");
+    const nextBtn = document.getElementById("next");
+    const prevBtn = document.getElementById("prev");
+    if (!carousel || !nextBtn || !prevBtn) return () => { };
+
+    const slider = carousel.querySelector(".list");
+    const thumbs = carousel.querySelector(".thumbnail");
+
+    let autoNextTimer;
+    const TIME_AUTO = 7000;
+    const TIME_ANIM = window.innerWidth < 768 ? 1200 : 3000;
+
+    function resetAutoNext() {
+        clearTimeout(autoNextTimer);
+        autoNextTimer = setTimeout(() => nextBtn.click(), TIME_AUTO);
+    }
+
+    function rotate(type) {
+        const slides = [...slider.children];
+        const thumbsItems = [...thumbs.children];
+
+        carousel.classList.add(type);
+
+        if (type === "next") {
+            slider.append(slides[0]);
+            thumbs.append(thumbsItems[0]);
+        } else {
+            slider.prepend(slides.at(-1));
+            thumbs.prepend(thumbsItems.at(-1));
+        }
+
+        setTimeout(() => {
+            carousel.classList.remove(type);
+            nextBtn.style.pointerEvents =
+                prevBtn.style.pointerEvents = "auto";
+        }, TIME_ANIM);
+
+        resetAutoNext();
+    }
+
+    nextBtn.onclick = () => {
+        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+        rotate("next");
+    };
+
+    prevBtn.onclick = () => {
+        nextBtn.style.pointerEvents = prevBtn.style.pointerEvents = "none";
+        rotate("prev");
+    };
+
+    resetAutoNext();
+
+    return () => {
+        clearTimeout(autoNextTimer);
+        nextBtn.onclick = null;
+        prevBtn.onclick = null;
+    };
+}
+
+function initMobileCarousel() {
+
+    const carousel = document.querySelector(".carousel");
+    if (!carousel) return () => { };
+
+    const items = [...carousel.querySelectorAll(".list .item")];
+    const next = document.getElementById("next");
+    const prev = document.getElementById("prev");
+
+    let index = 0;
+    let animating = false;
+
+    gsap.set(items, { opacity: 0, scale: 0.9 });
+    gsap.set(items[0], { opacity: 1, scale: 1 });
+
+    function show(i, dir = 1) {
+        if (animating) return;
+        animating = true;
+
+        gsap.timeline({
+            onComplete: () => {
+                index = i;
+                animating = false;
+            }
+        })
+            .to(items[index], {
+                x: -50 * dir,
+                opacity: 0,
+                scale: 0.95,
+                duration: 0.4
+            })
+            .fromTo(
+                items[i],
+                { x: 50 * dir, opacity: 0, scale: 0.95 },
+                { x: 0, opacity: 1, scale: 1, duration: 0.4 },
+                "-=0.2"
+            );
+    }
+
+    const nextH = () => show((index + 1) % items.length, 1);
+    const prevH = () => show((index - 1 + items.length) % items.length, -1);
+
+    next?.addEventListener("click", nextH);
+    prev?.addEventListener("click", prevH);
+
+    return () => {
+        next?.removeEventListener("click", nextH);
+        prev?.removeEventListener("click", prevH);
+        gsap.killTweensOf(items);
+    };
+}
+
+/* =========================
+   RESUME SCROLL STACK
+========================= */
+gsap.registerPlugin(ScrollTrigger);
+
+const resumeSection = document.querySelector(".my-resume-section .scroll-section");
+const wrapper = resumeSection.querySelector(".list");
+const items = wrapper.querySelectorAll(".item");
+const gap = 50;        // default gap
+const extraGap = 100;  // extra gap between 1st and 2nd item
+
+// -----------------------------
+// STEP 1️⃣ : Set parent height dynamically
+// -----------------------------
+function setSectionHeight() {
+    let totalHeight = 0;
+    items.forEach((item, index) => {
+        totalHeight += item.offsetHeight + gap;
+        if (index === 0) totalHeight += extraGap; // extra gap after first item
+    });
+    const isMobile = window.innerWidth < 768;
+    const extra = isMobile ? -100 : 150;
+
+    document.querySelector(".my-resume-section").style.height =
+        totalHeight + extra + "px";
 
 }
+setSectionHeight();
+
+// -----------------------------
+// STEP 2️⃣ : Initial positioning of each .item
+// -----------------------------
+items.forEach((item, index) => {
+    item.style.position = "absolute";
+    item.style.top = "0";
+    item.style.transform = "translateX(-50%)";
+
+    if (index === 0) {
+        gsap.set(item, { y: 0 });
+        item.classList.add("active");
+    } else {
+        // add extra gap only for second item
+        const extra = index === 1 ? extraGap : 0;
+        gsap.set(item, { y: index * (item.offsetHeight + gap) + extra });
+    }
+});
+
+// -----------------------------
+// STEP 3️⃣ : Calculate Scroll End dynamically
+// -----------------------------
+function calcScrollEnd() {
+    let total = 0;
+    items.forEach((item, index) => {
+        total += item.offsetHeight + gap;
+        if (index === 0) total += extraGap; // extra gap after first item
+    });
+    return total - window.innerHeight;
+}
+
+// -----------------------------
+// STEP 4️⃣ : ScrollTrigger Timeline
+// -----------------------------
+resumeSection.style.minHeight = "100vh";
+
+const tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: resumeSection,
+        start: "top top",
+        end: () => "+=" + calcScrollEnd(),
+        scrub: 1,
+        pin: true,
+        invalidateOnRefresh: true,
+        onUpdate: self => {
+            const spacer = self.pinSpacer;
+            if (spacer) {
+                spacer.style.setProperty("padding-top", "0", "important");
+                spacer.style.setProperty("margin-top", "0", "important");
+                spacer.style.setProperty("padding-bottom", "0", "important");
+                spacer.style.setProperty("margin-bottom", "0", "important");
+            }
+        },
+    },
+});
+
+// -----------------------------
+// STEP 5️⃣ : Animate each .item card
+// -----------------------------
+items.forEach((item, index) => {
+    if (index === 0) return;
+    const prev = items[index - 1];
+
+    tl.to(prev, { scale: 0.9, borderRadius: "10px", duration: 0.8 }, "+=0");
+    tl.to(
+        item,
+        {
+            y: 0,
+            duration: 1,
+            ease: "power1.out",
+            onStart: () => {
+                items.forEach((i) => i.classList.remove("active"));
+                item.classList.add("active");
+                const video = item.querySelector("video");
+                if (video) video.play();
+            },
+        },
+        "<0.2"
+    );
+});
+
+// -----------------------------
+// STEP 6️⃣ : Recalculate on resize
+// -----------------------------
+window.addEventListener("resize", () => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+    setSectionHeight();
+    items.forEach((item, index) => {
+        if (index === 0) {
+            gsap.set(item, { y: 0 });
+        } else {
+            const extra = index === 1 ? extraGap : 0;
+            gsap.set(item, { y: index * (item.offsetHeight + gap) + extra });
+        }
+    });
+
+    ScrollTrigger.refresh();
+});
+
+
+
+/* =========================
+   CONTACT POPUP + FORM
+========================= */
+const popup = document.getElementById("popupForm");
+const closeBtn = document.getElementById("closeForm");
+
+document.querySelectorAll("#openForm").forEach(btn =>
+    btn.addEventListener("click", () => popup?.classList.add("active"))
+);
+
+closeBtn?.addEventListener("click", () =>
+    popup?.classList.remove("active")
+);
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") popup?.classList.remove("active");
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const form = document.getElementById("contactForm");
+    if (!form) return;
+
+    form.addEventListener("submit", async e => {
+        e.preventDefault();
+
+        try {
+            const res = await fetch("send-mail.php", {
+                method: "POST",
+                body: new FormData(form)
+            });
+            const data = await res.json();
+            showToast(data.message, data.status);
+
+            if (data.status === "success") {
+                form.reset();
+                popup?.classList.remove("active");
+            }
+        } catch {
+            showToast("Something went wrong!", "error");
+        }
+    });
+});
+
+function showToast(msg, type = "success") {
+    const box = document.getElementById("customAlert");
+    const text = document.getElementById("alertMessage");
+    const inner = box?.querySelector(".toast-box");
+    if (!box || !text || !inner) return;
+
+    inner.className = "toast-box " + type;
+    text.textContent = msg;
+    box.classList.add("active");
+
+    setTimeout(() => box.classList.remove("active"), 4000);
+}
+
 
 /* ---------------------------------------------
    SCROLL TOP ON LOAD + BACK TO TOP
@@ -217,98 +485,3 @@ window.addEventListener("beforeunload", () => scrollTo(0, 0));
 
 document.querySelector('.footer-top-arrow .footer-top-arrow-hlp')
     ?.addEventListener('click', () => scrollTo({ top: 0, behavior: "smooth" }));
-
-
-/* ---------------------------------------------
-   FIXED MOBILE + DESKTOP RESUME SCROLL ENGINE
----------------------------------------------- */
-/* ----------------------------------------------------
-   ANDROID-PROOF SCROLL STACK ENGINE (Final Stable)
----------------------------------------------------- */
-function initResume() {
-
-    const section = document.querySelector(".my-resume-section .scroll-section");
-    if (!section) return;
-
-    const wrapper = section.querySelector(".list");
-    const cards = [...wrapper.querySelectorAll(".item")];
-
-    // REAL MOBILE FIX — dynamic card height
-    const vwHeight = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    const cardHeight = vwHeight * 0.85;
-    const gap = 40;
-
-    // Kill old triggers
-    ScrollTrigger.getAll().forEach(t => t.kill());
-    gsap.set(cards, { clearProps: "all" });
-
-    // ⭐ Calculate wrapper height based on REAL device height
-    const totalHeight = (cards.length * (cardHeight + gap));
-    wrapper.style.height = totalHeight + "px";
-
-    // ⭐ Set initial card positions
-    cards.forEach((card, i) => {
-        gsap.set(card, {
-            position: "absolute",
-            top: 0,
-            left: "50%",
-            transform: "translateX(-50%)",
-            y: i * (cardHeight + gap)
-        });
-    });
-
-    // ⭐ Scroll end value
-    const endVal = totalHeight - vwHeight;
-
-    // ⭐ TIMELINE
-    const tl = gsap.timeline({
-        scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "+=" + endVal,
-            scrub: 1,
-            pin: true,
-            pinSpacing: true,
-            pinType: "fixed",  // ⭐ ANDROID BEST BEHAVIOR
-            invalidateOnRefresh: true,
-            anticipatePin: 1
-        }
-    });
-
-    // ⭐ Animate stack
-    cards.forEach((card, i) => {
-        if (i === 0) return;
-
-        tl.to(cards[i - 1], {
-            scale: 0.9,
-            borderRadius: "15px",
-            duration: 0.4
-        });
-
-        tl.to(card, {
-            y: 0,
-            duration: 0.6,
-            ease: "power1.out"
-        }, "<0.1");
-    });
-
-    ScrollTrigger.refresh(true);
-}
-
-// INIT + FIX ANDROID RESIZE BEHAVIOR
-initResume();
-
-// ⭐ Android fix: Visual viewport resize
-if (window.visualViewport) {
-    visualViewport.addEventListener("resize", () =>
-        setTimeout(() => initResume(), 200)
-    );
-}
-
-window.addEventListener("orientationchange", () =>
-    setTimeout(() => initResume(), 300)
-);
-
-window.addEventListener("resize", () =>
-    setTimeout(() => initResume(), 300)
-);

@@ -366,8 +366,8 @@ if (window.innerWidth < 576) {
                 start: "top 0",
                 end: () => "+=" + calcMobileScrollEnd(),
                 scrub: 1,
-                pin: true,           
-                pinType: "sticky",   
+                pin: true,
+                pinType: "sticky",
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
             },
@@ -407,3 +407,6 @@ window.addEventListener("load", () => ScrollTrigger.refresh());
 
 document.querySelector('.footer-top-arrow .footer-top-arrow-hlp')
     .addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+
+
